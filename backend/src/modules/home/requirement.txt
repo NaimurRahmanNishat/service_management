@@ -1,0 +1,7 @@
+
+
+1. header top (slider)
+2. premimum service (select for rating only 5 star)
+3. Standard service (select for rating 3-4 star)
+4. basic service (select for rating 1-2 star)   
+

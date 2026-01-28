@@ -1,0 +1,589 @@
+// use moduler pattern (because this is big project)
+
+backend/
+├── src/
+│   ├── @types/
+│   │   └── api.d.ts
+│   │
+│   ├── config/
+│   │   ├── cacheConfig.ts
+│   │   ├── cloudinary.ts
+│   │   ├── db.ts
+│   │   ├── index.ts
+│   │   └── redis.ts
+│   │
+│   ├── helper/
+│   │   ├── baseImage.ts
+│   │   └── fileUploader.ts
+│   │
+│   ├── middlewares/
+│   │   ├── auth.middleware.ts
+│   │   ├── cacheAsync.ts
+│   │   └── validate.middleware.ts
+│   │
+│   ├── modules/
+│   │   ├── auth/
+│   │   │   ├── requirement.txt
+│   │   │   ├── auth.controller.ts
+│   │   │   ├── auth.repository.ts
+│   │   │   ├── auth.route.ts
+│   │   │   ├── auth.service.ts
+│   │   │   └── auth.validation.ts
+│   │   │
+│   │   ├── user/
+│   │   │   ├── requirement.txt
+│   │   │   ├── user.controller.ts
+│   │   │   ├── user.model.ts
+│   │   │   ├── user.repository.ts
+│   │   │   ├── user.route.ts
+│   │   │   ├── user.service.ts
+│   │   │   └── user.validation.ts
+│   │   │
+│   │   ├── service/
+│   │   │   ├── requirement.txt
+│   │   │   ├── service.controller.ts
+│   │   │   ├── service.model.ts
+│   │   │   ├── service.repository.ts
+│   │   │   ├── service.route.ts
+│   │   │   ├── service.service.ts
+│   │   │   └── service.validation.ts
+│   │   │
+│   │   ├── booking/
+│   │   │   ├── requirement.txt
+│   │   │   ├── booking.controller.ts
+│   │   │   ├── booking.model.ts
+│   │   │   ├── booking.repository.ts
+│   │   │   ├── booking.route.ts
+│   │   │   ├── booking.service.ts
+│   │   │   └── booking.validation.ts
+│   │   │
+│   │   ├── payment/
+│   │   │   ├── requirement.txt
+│   │   │   ├── payment.controller.ts
+│   │   │   ├── payment.model.ts
+│   │   │   ├── payment.repository.ts
+│   │   │   ├── payment.route.ts
+│   │   │   ├── payment.service.ts
+│   │   │   └── payment.validation.ts
+│   │   │
+│   │   ├── review/
+│   │   │   ├── requirement.txt
+│   │   │   ├── review.controller.ts
+│   │   │   ├── review.model.ts
+│   │   │   ├── review.repository.ts
+│   │   │   ├── review.route.ts
+│   │   │   ├── review.service.ts
+│   │   │   └── review.validation.ts
+│   │   │
+│   │   ├── report/
+│   │   │   ├── requirement.txt
+│   │   │   ├── report.controller.ts
+│   │   │   ├── report.model.ts
+│   │   │   ├── report.repository.ts
+│   │   │   ├── report.route.ts
+│   │   │   ├── report.service.ts
+│   │   │   └── report.validation.ts
+│   │   │
+│   │   ├── support/
+│   │   │   ├── requirement.txt
+│   │   │   ├── support.controller.ts
+│   │   │   ├── support.model.ts
+│   │   │   ├── support.repository.ts
+│   │   │   ├── support.route.ts
+│   │   │   ├── support.service.ts
+│   │   │   └── support.validation.ts
+│   │   │
+│   │   ├── finance/
+│   │   │   ├── requirement.txt
+│   │   │   ├── commission.model.ts
+│   │   │   ├── withdrawal.model.ts
+│   │   │   ├── paymentHistory.model.ts
+│   │   │   └── finance.service.ts
+│   │   │
+│   │   ├── notification/
+│   │   │   ├── notification.model.ts
+│   │   │   ├── notification.service.ts
+│   │   │   └── notification.route.ts
+│   │   │
+│   │   ├── admin/
+│   │   │   ├── requirement.txt
+│   │   │   ├── admin.controller.ts
+│   │   │   ├── admin.route.ts
+│   │   │   ├── admin.service.ts
+│   │   │   ├── auditLog.model.ts
+│   │   │   └── appConfig.model.ts
+│   │   │
+│   │   └── vendor/
+│   │       ├── requirement.txt
+│   │       ├── vendorProfile.model.ts
+│   │       ├── vendor.controller.ts
+│   │       ├── vendor.route.ts
+│   │       └── vendor.service.ts
+│   │
+│   ├── templates/
+│   │
+│   ├── utils/
+│   │   ├── cache.ts
+│   │   ├── constants.ts
+│   │   ├── cookie.ts
+│   │   ├── email.ts
+│   │   ├── errorHandler.ts
+│   │   ├── token.ts
+│   │   └── response.ts
+│   │
+│   ├── app.ts
+│   └── server.ts
+└── package.json
+
+
+
+
+
+
+Client (FormData)
+     ↓
+Multer (Memory)
+     ↓
+Sharp (Resize + Compress)
+     ↓
+Cloudinary (Upload)
+     ↓
+MongoDB (Save URLs)
+
+
+
+
+        ┌──────────────┐
+        │   Client     │
+        │  (Browser)   │
+        └──────┬───────┘
+               │ HTTPS
+               ▼
+        ┌──────────────┐
+        │    NGINX     │
+        │ LoadBalancer │
+        └──────┬───────┘
+        ┌──────┼─────────────┐
+        ▼      ▼             ▼
+ ┌─────────┐ ┌─────────┐ ┌─────────┐
+ │ Node #1 │ │ Node #2 │ │ Node #3 │
+ └────┬────┘ └────┬────┘ └────┬────┘
+      │           │           │
+      └──────┬────┴──────┬────┘
+             ▼           ▼
+      ┌──────────────┐  ┌─────────────┐
+      │    Redis     │  │  Database   │
+      │              │  │ Mongo/Postg │
+      └──────────────┘  └─────────────┘
+
+
+
+
+
+
+
+┌─────────────────────────────────────────────────────────────┐
+│                    PAYMENT INITIATION                       │
+└─────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              │                               │
+              ▼                               ▼
+    ┌──────────────────┐          ┌──────────────────┐
+    │  Stripe Payment  │          │  IoT Payment     │
+    │  (Online)        │          │  (Scanner/QR)    │
+    └──────────────────┘          └──────────────────┘
+              │                               │
+              ▼                               ▼
+    ┌──────────────────┐          ┌──────────────────┐
+    │ Create Payment   │          │ Scan QR Code     │
+    │ Intent           │          │ Verify Device    │
+    └──────────────────┘          └──────────────────┘
+              │                               │
+              ▼                               ▼
+    ┌──────────────────┐          ┌──────────────────┐
+    │ Process Payment  │          │ Process Payment  │
+    │ via Stripe       │          │ via IoT API      │
+    └──────────────────┘          └──────────────────┘
+              │                               │
+              └───────────────┬───────────────┘
+                              ▼
+              ┌───────────────────────────────┐
+              │  Payment Successful?          │
+              └───────────────────────────────┘
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+                   Yes                  No
+                    │                   │
+                    ▼                   ▼
+    ┌──────────────────────┐  ┌──────────────────┐
+    │ Create Transaction   │  │ Return Error     │
+    │ Record               │  │ Rollback         │
+    └──────────────────────┘  └──────────────────┘
+                    │
+                    ▼
+    ┌──────────────────────────────────────┐
+    │  Calculate Commission Distribution   │
+    └──────────────────────────────────────┘
+                    │
+                    ▼
+    ┌──────────────────────────────────────┐
+    │  Update Wallets (Vendor, Businessman)│
+    └──────────────────────────────────────┘
+                    │
+                    ▼
+    ┌──────────────────────────────────────┐
+    │  Send Notifications                  │
+    │  - Email                             │
+    │  - SMS                               │
+    │  - Push Notification                 │
+    └──────────────────────────────────────┘
+                    │
+                    ▼
+    ┌──────────────────────────────────────┐
+    │  Return Success Response             │
+    └──────────────────────────────────────┘
+
+
+
+
+## 6️⃣ REST API Design
+
+### API Endpoints Structure
+```
+BASE_URL: https://localhost:8000/api/v1
+```
+
+### Authentication Endpoints
+```
+POST   /auth/register          - Register new user
+POST   /auth/login             - Login user
+POST   /auth/refresh           - Refresh access token
+POST   /auth/logout            - Logout user
+POST   /auth/forgot-password   - Request password reset
+POST   /auth/reset-password    - Reset password
+GET    /auth/verify-email/:token - Verify email
+```
+
+### User Management Endpoints
+```
+GET    /users                  - Get all users (Admin only)
+GET    /users/:id              - Get user by ID
+PUT    /users/:id              - Update user
+DELETE /users/:id              - Delete user (Super Admin)
+PATCH  /users/:id/suspend      - Suspend user (Admin)
+GET    /users/me               - Get current user profile
+PUT    /users/me               - Update current user profile
+```
+
+### Product Management Endpoints
+```
+POST   /products               - Create product (Admin)
+GET    /products               - Get all products
+GET    /products/:id           - Get product by ID
+PUT    /products/:id           - Update product (Admin)
+DELETE /products/:id           - Delete product (Admin)
+GET    /products/search        - Search products
+GET    /products/category/:category - Get by category
+```
+
+### Rental Management Endpoints
+```
+POST   /rentals                - Create rental request
+GET    /rentals                - Get all rentals
+GET    /rentals/:id            - Get rental by ID
+PATCH  /rentals/:id/approve    - Approve rental (Admin)
+PATCH  /rentals/:id/reject     - Reject rental (Admin)
+PATCH  /rentals/:id/terminate  - Terminate rental
+GET    /rentals/vendor/:vendorId - Get vendor's rentals
+GET    /rentals/product/:productId - Get product's rental history
+```
+
+### Payment Endpoints
+```
+POST   /payments/stripe/intent        - Create Stripe payment intent
+POST   /payments/stripe/confirm       - Confirm Stripe payment
+POST   /payments/iot/generate-qr      - Generate QR for IoT payment
+POST   /payments/iot/process          - Process IoT payment
+GET    /payments                      - Get all payments
+GET    /payments/:id                  - Get payment by ID
+POST   /payments/:id/refund           - Refund payment (Admin)
+GET    /payments/user/:userId         - Get user's payment history
+```
+
+### Commission Endpoints
+```
+GET    /commissions                   - Get all commissions (Admin)
+GET    /commissions/:id               - Get commission by ID
+GET    /commissions/vendor/:vendorId  - Get vendor commissions
+GET    /commissions/admin/:adminId    - Get admin commissions
+POST   /commissions/withdraw          - Request commission withdrawal
+GET    /commissions/reports           - Generate commission reports
+IoT Device Endpoints
+POST   /iot/devices                   - Add new IoT device (Admin)
+GET    /iot/devices                   - Get all devices
+GET    /iot/devices/:id               - Get device by ID
+PUT    /iot/devices/:id               - Update device
+DELETE /iot/devices/:id               - Delete device
+PATCH  /iot
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 📚 Booking, Payment & Location Availability - Complete Documentation
+
+## 🎯 Model Usage Overview
+
+### 1️⃣ **Booking Model** - বুকিং ম্যানেজমেন্টের জন্য
+
+**কখন ব্যবহার করবেন:**
+- User যখন কোন service book করবে
+- Vendor তার bookings দেখবে
+- Admin সব bookings monitor করবে
+- Booking status update করবে (pending → confirmed → active → completed)
+- Booking cancel করবে
+
+**Main Features:**
+- Service booking creation
+- Booking status tracking
+- Payment linking
+- Duration & quantity management
+- Cancellation handling
+
+---
+
+### 2️⃣ **Payment Model** - পেমেন্ট প্রসেসিং এর জন্য
+
+**কখন ব্যবহার করবেন:**
+- User payment করবে (Stripe/Bkash/IoT Scanner)
+- Payment status track করবে
+- Refund process করবে
+- Transaction history দেখবে
+- Payment verification করবে
+
+**Main Features:**
+- Multiple payment methods (Stripe, Bkash, IoT Scanner)
+- Payment status tracking
+- Transaction management
+- Refund handling
+- Payment metadata storage
+
+---
+
+### 3️⃣ **Location Availability Model** - লোকেশন ভিত্তিক স্টক ম্যানেজমেন্ট
+
+**কখন ব্যবহার করবেন:**
+- বিভিন্ন location এ service availability track করবে
+- Location wise stock management করবে
+- User নিকটবর্তী location এ available service খুঁজবে
+- Multi-location inventory management করবে
+
+**Main Features:**
+- Location-wise quantity tracking
+- Real-time availability status
+- Multi-location support
+- Automatic status update
+
+---
+
+## 📋 Complete File Structure
+
+```
+src/modules/
+├── booking/
+│   ├── booking.model.ts
+│   ├── booking.interface.ts
+│   ├── booking.service.ts
+│   ├── booking.controller.ts
+│   ├── booking.routes.ts
+│   └── booking.validation.ts
+│
+├── payment/
+│   ├── payment.model.ts
+│   ├── payment.interface.ts
+│   ├── payment.service.ts
+│   ├── payment.controller.ts
+│   ├── payment.routes.ts
+│   └── payment.validation.ts
+│
+└── locationAvailability/
+    ├── locationAvailability.model.ts
+    ├── locationAvailability.interface.ts
+    ├── locationAvailability.service.ts
+    ├── locationAvailability.controller.ts
+    ├── locationAvailability.routes.ts
+    └── locationAvailability.validation.ts
+```
+
+---
+
+## 🔄 Workflow Example
+
+### **Complete Booking Flow:**
+
+```
+1. User selects service → ServiceDetails page
+2. User clicks "Book Now" → Payment page
+3. User selects payment method
+4. CreateBooking API called
+   ↓
+5. Booking created (status: pending)
+   ↓
+6. Service quantity decreased
+   ↓
+7. CreatePayment API called
+   ↓
+8. Payment processed (Stripe/Bkash/IoT)
+   ↓
+9. Payment status updated (completed)
+   ↓
+10. Booking status updated (confirmed)
+    ↓
+11. User receives confirmation
+```
+
+---
+
+## 📊 API Endpoints Overview
+
+### **Booking APIs:**
+```
+POST   /api/bookings                    - Create booking
+GET    /api/bookings                    - Get all bookings (admin)
+GET    /api/bookings/my-bookings        - Get user's bookings
+GET    /api/bookings/vendor-bookings    - Get vendor's bookings
+GET    /api/bookings/:id                - Get single booking
+PATCH  /api/bookings/:id/confirm        - Confirm booking
+PATCH  /api/bookings/:id/cancel         - Cancel booking
+PATCH  /api/bookings/:id/complete       - Complete booking
+PATCH  /api/bookings/:id/status         - Update status
+```
+
+### **Payment APIs:**
+```
+POST   /api/payments                    - Create payment
+POST   /api/payments/process            - Process payment
+GET    /api/payments/my-payments        - Get user payments
+GET    /api/payments/:id                - Get single payment
+POST   /api/payments/:id/refund         - Refund payment
+POST   /api/payments/verify             - Verify payment
+```
+
+### **Location Availability APIs:**
+```
+POST   /api/locations                   - Create location availability
+GET    /api/locations                   - Get all locations
+GET    /api/locations/service/:id       - Get by service
+GET    /api/locations/city/:city        - Get by city
+GET    /api/locations/:id               - Get single location
+PATCH  /api/locations/:id               - Update location
+DELETE /api/locations/:id               - Delete location
+```
+
+---
+
+## 🎨 Frontend Integration Example
+
+### **Creating a Booking:**
+```typescript
+const handleBooking = async () => {
+  // 1. Create booking
+  const bookingResponse = await createBooking({
+    serviceId: service._id,
+    bookingType: "day",
+    duration: { value: 3, unit: "day" },
+    quantity: 2,
+    startDate: "2024-01-20",
+    endDate: "2024-01-23"
+  });
+
+  // 2. Process payment
+  if (bookingResponse.success) {
+    const paymentResponse = await processPayment({
+      bookingId: bookingResponse.data._id,
+      amount: bookingResponse.data.pricing.totalPrice,
+      paymentMethod: "stripe"
+    });
+
+    // 3. Navigate to success page
+    if (paymentResponse.success) {
+      navigate(`/booking-success/${bookingResponse.data._id}`);
+    }
+  }
+};
+```
+
+---
+
+## 💡 Key Features Explained
+
+### **1. Automatic Status Management:**
+- Booking status auto-updates based on payment
+- Location availability auto-updates based on quantity
+- Service status auto-updates based on bookings
+
+### **2. Real-time Quantity Tracking:**
+- Service quantity decreases on booking
+- Service quantity increases on cancellation
+- Location-wise tracking available
+
+### **3. Payment Integration:**
+- Multiple payment gateways supported
+- Secure transaction handling
+- Automatic refund processing
+
+### **4. Multi-location Support:**
+- Track service availability across locations
+- Location-wise inventory management
+- Nearest location search
+
+---
+
+## ⚠️ Important Notes
+
+1. **Payment Security:**
+   - Never store full card details
+   - Use payment gateway tokens
+   - Encrypt sensitive data
+
+2. **Booking Validation:**
+   - Check service availability before booking
+   - Validate dates (endDate > startDate)
+   - Check quantity availability
+
+3. **Cancellation Policy:**
+   - Implement refund calculation
+   - Update service quantity on cancel
+   - Track cancellation reasons
+
+4. **Error Handling:**
+   - Handle payment failures gracefully
+   - Rollback booking on payment failure
+   - Proper error messages to users
+
+---
+
+## 🚀 Next Steps
+
+After implementing these modules, you'll have:
+- ✅ Complete booking system
+- ✅ Multiple payment methods
+- ✅ Location-based inventory
+- ✅ Real-time availability tracking
+- ✅ Admin dashboard ready APIs
+- ✅ User booking management
+- ✅ Vendor booking tracking
+
+এখন আমি আপনাকে সব files দিচ্ছি...

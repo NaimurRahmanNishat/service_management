@@ -1,0 +1,33 @@
+<h2>🎉 Welcome to Service Management!</h2>
+
+<p>Hello <strong><%= name %></strong>,</p>
+
+<p>
+  Thank you for joining Service Management!
+</p>
+
+<div class="highlight-box">
+  <h3>🔑 Activate Your Account</h3>
+
+  <div style="text-align:center; margin:25px 0">
+    <div style="
+      font-size:32px;
+      font-weight:bold;
+      letter-spacing:8px;
+      padding:20px 40px;
+      border:2px dashed #667eea;
+    ">
+      <%= activationCode %>
+    </div>
+  </div>
+
+  <p style="text-align:center">
+    ⏰ This code expires in <strong>10 minutes</strong>
+  </p>
+</div>
+
+<div style="text-align:center; margin:30px 0">
+  <a href="<%= clientUrl %>/activate?email=<%= email %>&code=<%= activationCode %>">
+    🚀 Activate My Account
+  </a>
+</div>
