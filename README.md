@@ -5,7 +5,7 @@ Zenmo is a scalable multi-vendor service marketplace where Admins provide servic
 
 It is designed with enterprise-grade architecture, role-based access control, and high-availability infrastructure.
 
-### 🧠 Core Concept
+# 🧠 Core Concept
 
 | Role            | Responsibility                                                |
 | --------------- | ------------------------------------------------------------- |
@@ -15,7 +15,7 @@ It is designed with enterprise-grade architecture, role-based access control, an
 | **User**        | Book services, make payments, give ratings & reviews          |
 
 
-### Service Flow
+# Service Flow
 
 1. Admin creates a service/product
 2. Admin assigns service to Vendor
@@ -25,8 +25,9 @@ It is designed with enterprise-grade architecture, role-based access control, an
 6. User leaves rating & review
 
 
-### 🌍 Location-Based Service System
+# 🌍 Location-Based Service System
 
+```
 Country
  └── Division
      └── District
@@ -34,8 +35,9 @@ Country
              └── Area
                  └── Sub-Area
                      └── Zip Code
+```
 
-### Location Rules
+# Location Rules
 
 1. Locations are created & managed only by Admin / Super Admin
 2. When a Vendor is created, a Vendor Location Profile is auto-generated
@@ -55,15 +57,16 @@ User → Payment → Booking → Commission → Vendor & Admin
 
 
 ### ⭐ Review & Rating System
+```
 Users can:
 Rate services
 Leave comments
 Edit or delete their reviews
 Reviews appear on Service Detail Pages
 Used for vendor performance tracking
+```
 
-
-### 🏗️ System Architecture
+# 🏗️ System Architecture
 
 ```
 # Load Balanced Infrastructure
@@ -78,7 +81,6 @@ Used for vendor performance tracking
   :5173              :5174              :5175
 ```
 
-
 ```
 # API Layer
         ┌───────────────┐
@@ -92,15 +94,16 @@ Used for vendor performance tracking
   :5001        :5002        :5003
 ```
 
-
 ### Services
 
 MongoDB – Primary Database
+
 Redis – Caching & rate-limiting
+
 Cloudinary – Media storage
 
 
-### 🧩 Backend – Modular Architecture
+# 🧩 Backend – Modular Architecture
 ```
 backend/
 └── src/
@@ -124,7 +127,8 @@ backend/
 ```
 
 
-# Each Module Contains
+### Each Module Contains
+```
 controller.ts
 service.ts
 repository.ts
@@ -132,16 +136,18 @@ model.ts
 route.ts
 validation.ts
 requirement.txt
+```
 
-# This ensures:
+### This ensures:
+```
 High maintainability
 Easy scalability
 Clear separation of concerns
+```
 
+# 🎨 Frontend Stack
 
-### 🎨 Frontend Stack
-
-# Technologies Used
+### Technologies Used
 React + TypeScript
 Redux Toolkit
 Tailwind CSS
@@ -175,12 +181,12 @@ User Dashboard
 Each dashboard is role-protected and dynamically rendered.
 
 
-### 🔐 Authentication & Security
-JWT Authentication
-Access Token + Refresh Token
-CSRF Protection
-Rate Limiting
-Role-Based Access Control (RBAC)
+# 🔐 Authentication & Security
+1. JWT Authentication
+2. Access Token + Refresh Token
+3. CSRF Protection
+4. Rate Limiting
+5. Role-Based Access Control (RBAC)
 
 
 ### ⚙️ Key Features
@@ -199,15 +205,20 @@ Role-Based Access Control (RBAC)
 
 # Frontend
 https://github.com/NaimurRahmanNishat/service_management.git
+
+```bash
 cd frontend
 npm install
 npm run dev
+```
+
 
 # Backend
+```bash
 cd backend
 npm install
 npm run dev
-
+```
 
 ### 🌐 Deployment
 
