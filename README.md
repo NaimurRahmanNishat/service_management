@@ -65,6 +65,7 @@ Used for vendor performance tracking
 
 ### 🏗️ System Architecture
 
+```
 # Load Balanced Infrastructure
               ┌─────────────────┐
               │   Nginx :80     │
@@ -75,7 +76,10 @@ Used for vendor performance tracking
       ▼                ▼                ▼
  Frontend          Frontend          Frontend
   :5173              :5174              :5175
+```
 
+
+```
 # API Layer
         ┌───────────────┐
         │   Nginx :80   │
@@ -86,6 +90,7 @@ Used for vendor performance tracking
    ▼            ▼            ▼
  Backend      Backend      Backend
   :5001        :5002        :5003
+```
 
 
 ### Services
@@ -96,7 +101,7 @@ Cloudinary – Media storage
 
 
 ### 🧩 Backend – Modular Architecture
-
+```
 backend/
 └── src/
     ├── config/
@@ -116,6 +121,8 @@ backend/
         ├── notification
         ├── admin
         └── vendor
+```
+
 
 # Each Module Contains
 controller.ts
@@ -145,6 +152,7 @@ zod & zod resolver
 Vite
 
 # Frontend Structure
+```
 frontend/
 └── src/
     ├── assets/
@@ -156,7 +164,7 @@ frontend/
     ├── routes/
     ├── types/
     └── utils/
-
+```
 
 ### Dashboard Roles
 Super Admin Dashboard
