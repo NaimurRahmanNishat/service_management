@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/redux/features/auth/authApi.ts
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseApi } from "@/redux/api/baseApi";
-import type { ILoginResponse, ILoginUserInput, ILogoutResponse } from "@/types/authType";
-import type { IActivateResponse, IActivateUserInput, IRegisterResponse, IRegisterUserInput, IResendActivationInput, IResendActivationResponse } from "@/types/userType";
+import type { IActivateResponse, IActivateUserInput, ILoginResponse, ILoginUserInput, ILogoutResponse, IRegisterResponse, IRegisterUserInput, IResendActivationInput, IResendActivationResponse } from "@/types/authType";
 
 
 // Step 3: Create RTK Query API

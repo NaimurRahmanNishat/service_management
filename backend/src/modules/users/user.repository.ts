@@ -17,7 +17,7 @@ export const findUserForActivation = (email: string):Promise<IUser | null> => {
 
 // find user by login
 export const findUserByLogin = (email: string):Promise<IUser | null> => {
-    return User.findOne({ email }).select("+password")
+  return User.findOne({ email }).select("+password")
 }
 
 // write save operation
@@ -40,7 +40,7 @@ export const findUserForRefreshToken = (userId: string): Promise<IUser | null> =
 
 // find user by id
 export const findUserById = (userId: string): Promise<IUser | null> => {
-  return User.findById(userId).select("-password");
+  return User.findById(userId).select("-password -refreshToken -refreshTokenExpiry");
 };
 
 

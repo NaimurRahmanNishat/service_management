@@ -1,12 +1,11 @@
 // src/modules/home/home.controller.ts
-
 import { Request, Response } from "express";
 import { catchAsync } from "../../middleware/catchAsync";
 import * as homeService from "./home.service";
 import { sendError, sendSuccess } from "../../utils/response";
 
 
-// ========================= 1. create home data =============================
+/* ================= CREATE HOME ================= */
 export const createHome = catchAsync(async (req: Request, res: Response) => {
   const result = await homeService.createHomeData(
     req.body,
@@ -25,14 +24,14 @@ export const createHome = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-// ========================= 2. Get All Homes =========================
+/* ================= GET ALL HOMES ================= */
 export const getAllHome = catchAsync(async (req: Request, res: Response) => {
   const result = await homeService.getAllHomes(req);
   sendSuccess(res, "Homes retrieved successfully", result);
 });
 
 
-// ========================= 3. Update Home (Single Endpoint) =========================
+/* ================= UPDATE HOME ================= */
 export const updateHome = catchAsync(async (req: Request, res: Response) => {
   const result = await homeService.updateHomeData(
     req.params.id!,
@@ -48,7 +47,7 @@ export const updateHome = catchAsync(async (req: Request, res: Response) => {
 });
 
 
-// ========================= 4. Delete Home =========================
+/* ================= DELETE HOME ================= */
 export const deleteHome = catchAsync(async (req: Request, res: Response) => {
   const result = await homeService.deleteHome(req.params.id!);
 

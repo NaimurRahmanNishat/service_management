@@ -4,6 +4,7 @@ import { HTTP_STATUS } from "./constants";
 import { sendError } from "./response";
 
 
+/* ================= CREATE CUSTOM ERROR ================= */
 export class AppError extends Error{
     public statusCode: number;
     public isOperational: boolean;
@@ -13,9 +14,10 @@ export class AppError extends Error{
         this.isOperational = true;
         Object.setPrototypeOf(this, new.target.prototype);
     }
-}
+};
 
 
+/* ================= ASYNC HANDLER ================= */
 export const asyncHandler = (fn: Function) => {
     return (req: Request, res: Response, next: NextFunction) => {
         Promise.resolve(fn(req, res, next)).catch(next);
@@ -23,7 +25,7 @@ export const asyncHandler = (fn: Function) => {
 };
 
 
-// global error handler
+/* ================= GLOBAL ERROR HANDLER ================= */
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     let error = {...err};
     error.message = err.message;
@@ -69,10 +71,10 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
     }
     console.error('Error:', err);
     return sendError(res, "Something went wrong", HTTP_STATUS.INTERNAL_SERVER_ERROR);
-}
+};
 
 
-// unhandle promise rejection
+/* ================= HANDLE PROCESS ERRORS ================= */
 export const handleProcessErrors = (err: any) => {
     process.on('unhandledRejection', (err: any) => {
         console.error('Unhandled rejection:', err);
@@ -85,9 +87,10 @@ export const handleProcessErrors = (err: any) => {
         console.error(err.name, err.message);
         process.exit(1);
     })
-}
+};
 
-// create custom error
+
+/* ================= CREATE ERROR ================= */
 export const createError = (message: string, statusCode: number) => {
     return new AppError(statusCode, message);
-}
+};

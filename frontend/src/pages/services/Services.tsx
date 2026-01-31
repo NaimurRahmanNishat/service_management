@@ -8,7 +8,7 @@ import type { IService } from "@/types/serviceType";
 import ServiceCard from "./ServiceCard";
 import { useSearchParams } from "react-router-dom";
 
-type PriceSort = "lowToHigh" | "highToLow" | undefined;
+export type PriceSort = "lowToHigh" | "highToLow" | undefined;
 
 const Services = () => {
   const [cursor, setCursor] = useState<string | null>(null);
@@ -24,9 +24,9 @@ const { data, isFetching } = useGetAllServiceDataQuery({
   cursor: cursor ?? undefined,
   sortBy: "createdAt",
   sortOrder,
-  search,
+  search
 });
-console.log(data);
+
 
   /* ================== Merge paginated data ================== */
   useEffect(() => {
@@ -140,7 +140,9 @@ console.log(data);
         </motion.div>
 
         {/* ================= Service Cards ================= */}
-        <div className="grid md:grid-cols-4 gap-4">
+        {
+          displayedServices.length > 0 ? (
+            <div className="grid md:grid-cols-4 gap-4">
           {displayedServices.map((service) => (
             <div
               key={service._id}
@@ -149,6 +151,12 @@ console.log(data);
             </div>
           ))}
         </div>
+          ) : (
+            <p className="text-center text-2xl mt-32 text-gray-500">
+              No services found!
+            </p>
+          )
+        }
 
         {/* ================= Loading ================= */}
         {isFetching && (

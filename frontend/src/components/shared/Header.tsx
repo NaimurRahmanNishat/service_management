@@ -48,7 +48,7 @@ const Header = () => {
 
   return (
     <header
-      className={`bg-linear-to-br from-teal-700 to-emerald-800 bg-transparent sticky top-0 left-0 w-full z-50 shadow duration-300 ${
+      className={`bg-gray-200 bg-opacity-75 sticky top-0 left-0 w-full z-50 shadow duration-300 ${
         menuOpen ? "shadow-lg" : "shadow-none"
       }`}
     >
@@ -82,14 +82,14 @@ const Header = () => {
             <>
               <Link
                 to="/login"
-                className="relative overflow-hidden px-4 py-2 border rounded-sm before:absolute before:inset-0 before:bg-green-600 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
+                className="relative overflow-hidden font-medium text-orange-600 px-4 py-2 border-2 border-orange-600 hover:border-white rounded-sm before:absolute before:inset-0 before:bg-green-600 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
               >
                 <span className="relative z-10">Login</span>
               </Link>
 
               <Link
                 to="/register"
-                className="relative overflow-hidden px-4 py-2 border rounded-sm before:absolute before:inset-0 before:bg-green-600 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
+                className="relative overflow-hidden font-medium text-yellow-600 border-yellow-600 hover:border-white px-4 py-2 border-2 rounded-sm before:absolute before:inset-0 before:bg-green-600 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
               >
                 <span className="relative z-10">Register</span>
               </Link>
@@ -97,7 +97,7 @@ const Header = () => {
           ) : (
             <button
               onClick={handleLogout}
-              className="relative overflow-hidden cursor-pointer px-4 py-2 border rounded-sm before:absolute before:inset-0 before:bg-red-500 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
+              className="relative overflow-hidden cursor-pointer font-medium px-4 py-2 border-2 border-red-200 rounded-sm before:absolute before:inset-0 before:bg-red-500 before:origin-left before:scale-x-0 before:transition-transform hover:before:scale-x-100 hover:text-white"
             >
               <span className="relative z-10">Logout</span>
             </button>
@@ -171,7 +171,7 @@ const Header = () => {
                   <Link
                     to="/login"
                     onClick={() => setMenuOpen(false)}
-                    className="border px-4 py-2 text-center rounded-sm hover:bg-green-600 hover:text-white transition"
+                    className="border-2 px-4 py-2 text-center rounded-sm hover:bg-green-600 hover:text-white transition"
                   >
                     Login
                   </Link>
@@ -179,7 +179,7 @@ const Header = () => {
                   <Link
                     to="/register"
                     onClick={() => setMenuOpen(false)}
-                    className="border px-4 py-2 text-center rounded-sm hover:bg-green-600 hover:text-white transition"
+                    className="border-2 px-4 py-2 text-center rounded-sm hover:bg-green-600 hover:text-white transition"
                   >
                     Register
                   </Link>

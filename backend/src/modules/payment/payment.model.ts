@@ -1,12 +1,11 @@
 // src/modules/payment/payment.model.ts
-
 import mongoose, { Document, Schema } from "mongoose";
 
-// ============== ENUMS ==============
+/* ================= ENUM ================= */
 export type PaymentMethod = "bkash" | "stripe" | "iot_scanner" | "cash";
 export type PaymentStatus = "pending" | "success" | "failed" | "refunded";
 
-// ============== INTERFACE ==============
+/* ================= INTERFACE ================= */
 export interface IPayment extends Document {
   booking: mongoose.Types.ObjectId;
   user: mongoose.Types.ObjectId;
@@ -28,7 +27,7 @@ export interface IPayment extends Document {
   updatedAt?: Date;
 }
 
-// ============== SCHEMA ==============
+/* ================= SCHEMA ================= */
 const paymentSchema = new Schema<IPayment>(
   {
     booking: {
@@ -78,11 +77,12 @@ const paymentSchema = new Schema<IPayment>(
   { timestamps: true }
 );
 
-// ============== INDEXES ==============
+/* ================= INDEXES ================= */
 paymentSchema.index({ user: 1, status: 1 });
 paymentSchema.index({ vendor: 1, status: 1 });
 paymentSchema.index({ booking: 1 });
 paymentSchema.index({ createdAt: -1 });
 
+/* ================= MODEL ================= */
 const Payment = mongoose.model<IPayment>("Payment", paymentSchema);
 export default Payment;

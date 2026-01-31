@@ -1,8 +1,7 @@
 // src/modules/home/home.model.ts
-
 import mongoose, { Document, Schema } from "mongoose";
 
-/* ---------- Common Image Type ---------- */
+/* ================= COMMON IMAGE SCHEMA ================= */
 const imageSchema = new Schema(
   {
     public_id: { type: String, required: true },
@@ -11,7 +10,7 @@ const imageSchema = new Schema(
   { _id: false }
 );
 
-/* ---------- Pricing Card Schema ---------- */
+/* ================= PRICING SCHEMA ================= */
 const pricingSchema = new Schema(
   {
     title: { type: String, required: true }, // Basic / Standard / Premium
@@ -23,7 +22,7 @@ const pricingSchema = new Schema(
   { _id: false }
 );
 
-/* ---------- Home Interface ---------- */
+/* ================= HOME INTERFACE ================= */
 export interface IHome extends Document {
   headerSliderTexts: string[];
 
@@ -71,7 +70,7 @@ export interface IHome extends Document {
   updatedAt?: Date;
 }
 
-/* ---------- Home Schema ---------- */
+/* ================= HOME SCHEMA ================= */
 const homeSchema = new Schema<IHome>(
   {
     /* Header Slider */

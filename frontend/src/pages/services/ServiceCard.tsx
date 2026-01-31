@@ -37,7 +37,7 @@ const ServiceCard = ({ service }: { service: IService }) => {
 
           <button
             onClick={handleClick}
-            className="px-3 py-1.5 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+            className="px-3 py-1.5 cursor-pointer text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
           >
             Service Details
           </button>

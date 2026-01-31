@@ -1,14 +1,14 @@
 // src/modules/home/home.route.ts
-
 import { Router } from 'express';
 import { createHome, deleteHome, getAllHome, updateHome } from './home.controller';
 import { upload } from '../../middleware/multer';
+import { authorizeRole, isAuthenticated } from '../../middleware/auth.middleware';
 
 
 
 const router = Router();
 
-// ========================= create home data =========================
+/* ================= CREATE HOME ================= */
 router.post( "/create-home",
   upload.fields([
     { name: "heroImages", maxCount: 5 },
@@ -16,13 +16,15 @@ router.post( "/create-home",
     { name: "standardImage", maxCount: 3 },
     { name: "premiumImage", maxCount: 3 },
   ]),
+  isAuthenticated,
+  authorizeRole("admin", "super_admin"),
   createHome
 );
 
-// ========================= Get Home Data =========================
+/* ================= GET ALL HOMES ================= */
 router.get("/", getAllHome);
 
-// ========================= Update Home Data =========================
+/* ================= UPDATE HOME ================= */
 router.patch( "/:id",
   upload.fields([
     { name: "heroImages", maxCount: 5 },
@@ -30,12 +32,12 @@ router.patch( "/:id",
     { name: "standardImage", maxCount: 3 },
     { name: "premiumImage", maxCount: 3 },
   ]),
+  isAuthenticated,
+  authorizeRole("admin", "super_admin"),
   updateHome
 );
 
-// ========================= Delete Home Data =========================
-router.delete("/:id", deleteHome);
-
-
+/* ================= DELETE HOME ================= */
+router.delete("/:id", isAuthenticated, authorizeRole("admin", "super_admin"), deleteHome);
 
 export const homeRoutes = router;

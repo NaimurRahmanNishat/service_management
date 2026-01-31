@@ -2,10 +2,9 @@
 import { Schema, model, Document, Types } from "mongoose";
 
 /* ================= TYPES ================= */
-
 export type Division =
   | "Dhaka"
-  | "Chittagong"
+  | "Chattogram"
   | "Rajshahi"
   | "Khulna"
   | "Barisal"
@@ -13,6 +12,7 @@ export type Division =
   | "Rangpur"
   | "Mymensingh";
 
+/* ================= INTERFACE ================= */
 export interface ILocation extends Document {
   division: Division;
   district: string;
@@ -26,7 +26,6 @@ export interface ILocation extends Document {
 }
 
 /* ================= SCHEMA ================= */
-
 const locationSchema = new Schema<ILocation>(
   {
     division: {
@@ -34,7 +33,7 @@ const locationSchema = new Schema<ILocation>(
       required: [true, "Division is required"],
       enum: [
         "Dhaka",
-        "Chittagong",
+        "Chattogram",
         "Rajshahi",
         "Khulna",
         "Barisal",
@@ -83,15 +82,11 @@ const locationSchema = new Schema<ILocation>(
 );
 
 /* ================= INDEX ================= */
-
 locationSchema.index(
   { division: 1, district: 1, area: 1, subArea: 1 },
   { unique: true }
 );
 
-
 /* ================= MODEL ================= */
-
 const Location = model<ILocation>("Location", locationSchema);
-
 export default Location;

@@ -5,10 +5,10 @@ import { confirmStripePayment, makeStripePayment } from "./payment.controller";
 
 const router = Router();
 
-// ========================= 1. make stripe payment =============================
+/* ================= CREATE STRIPE CHECKOUT SESSION ================= */
 router.post("/create-checkout-session", makeStripePayment);
 
-// ========================= 2. confirm stripe payment ============================= 
+/* ================= CONFIRM STRIPE PAYMENT ================= */
 router.post("/confirm-stripe-payment",  confirmStripePayment);
 
 export const paymentRoutes = router;

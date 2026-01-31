@@ -4,6 +4,7 @@ import type { ILocation } from "./locationType";
 import type { IProduct } from "./productType";
 
 export type serviceAvailability = "available" | "unavailable";
+export type categoryType = "technology" | "health" | "lifestyle" | "fitness" | "house" | "land" | "vehicle" | "others";
 
 /* ===================== INTERFACE ===================== */
 export interface IService {
@@ -52,8 +53,7 @@ export interface GetAllServicesParams {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   search?: string;
-  searchFields?: string[];
-  status?: "available" | "unavailable";
+  category?: categoryType;
 }
 
 

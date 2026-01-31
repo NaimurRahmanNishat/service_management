@@ -5,6 +5,11 @@ import { useGetAllHomeDataQuery } from "@/redux/features/home/homeApi";
 import type { IHome } from "@/types/homeType";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import CtaSection from "./CtaSection";
+import Benefits from "./Benefits";
+import Featured from "./Featured";
+import Categories from "./Categories";
+import Stats from "./Stats";
 
 const Home = () => {
   const { data, isLoading } = useGetAllHomeDataQuery();
@@ -59,7 +64,7 @@ const Home = () => {
       </section>
 
       {/* ================= PRICING SECTION ================= */}
-      <section className="mt-20 container mx-auto px-4">
+      <section className="my-20 container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-10">
           Our Pricing Plans
         </h2>
@@ -108,6 +113,11 @@ const Home = () => {
           ))}
         </motion.div>
       </section>
+      <Stats/>
+      <Categories/>
+      <Featured/>
+      <Benefits/>
+      <CtaSection/>
     </div>
   );
 };

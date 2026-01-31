@@ -1,3 +1,4 @@
+// src/components/shared/TopHeader.tsx
 import { useGetAllHomeDataQuery } from "@/redux/features/home/homeApi";
 import Marquee from "../ui/Marquee";
 

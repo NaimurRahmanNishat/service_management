@@ -1,17 +1,7 @@
 // src/types/productType.ts
 
 import type { ILocation } from "./locationType";
-
-
-export type ProductCategory =
-  | "technology"
-  | "health"
-  | "lifestyle"
-  | "fitness"
-  | "house"
-  | "land"
-  | "vehicle"
-  | "others";
+export type ProductCategory = "technology" | "health" | "lifestyle" | "fitness" | "house" | "land" | "vehicle" | "others";
 
 export interface IProduct {
   _id: string;

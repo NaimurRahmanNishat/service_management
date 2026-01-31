@@ -1,3 +1,4 @@
+// src/pages/dashboard/DashboardLayout.tsx
 import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 import type { RootState } from "@/redux/store";
@@ -46,7 +47,7 @@ const DashboardLayout = () => {
         </div>
 
         {/* Scrollable Outlet Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:mx-8 hidden md:block">
+        <div className="flex-1 overflow-y-auto p-4 md:mx-8 flex md:block ">
           <Outlet />
         </div>
 

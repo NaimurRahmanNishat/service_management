@@ -2,10 +2,11 @@
 
 import {z} from "zod";
 
+/* ================= CREATE LOCATION ================= */
 export const createLocationSchema = z.object({
     body: z.object({
         division: z.enum([
-            "Dhaka","Chittagong","Rajshahi","Khulna",
+            "Dhaka","Chattogram","Rajshahi","Khulna",
             "Barisal","Sylhet","Rangpur","Mymensingh"
         ]),
         district: z.string().min(1, "District is required"),

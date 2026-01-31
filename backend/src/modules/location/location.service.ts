@@ -5,7 +5,7 @@ import Location from "./location.model";
 import { ILocationTypes } from "./location.interface";
 
 
-/* ================= CREATE ================= */
+/* ================= CREATE LOCATION ================= */
 export const createLocations = async ( payload: ILocationTypes, user: IUser ) => {
   // super/admin only
   if (!["admin", "super_admin"].includes(user.role)) {
@@ -18,12 +18,9 @@ export const createLocations = async ( payload: ILocationTypes, user: IUser ) =>
   });
 };
 
-/* ================= GET ALL (CURSOR PAGINATION) ================= */
 
-export const getAllLocations = async (
-  query: any,
-  user: IUser
-) => {
+/* ================= GET ALL (CURSOR PAGINATION) ================= */
+export const getAllLocations = async ( query: any, user: IUser ) => {
   const pagination = calculateCursorPagination({
     limit: Number(query.limit),
     cursor: query.cursor,
@@ -60,12 +57,9 @@ export const getAllLocations = async (
   );
 };
 
-/* ================= GET SINGLE ================= */
 
-export const getLocationById = async (
-  locationId: string,
-  user: IUser
-) => {
+/* ================= GET SINGLE LOCATION ================= */
+export const getLocationById = async (locationId: string, user: IUser) => {
   const location = await Location.findById(locationId);
 
   if (!location) throw new Error("Location not found");
@@ -81,13 +75,9 @@ export const getLocationById = async (
   return location;
 };
 
-/* ================= UPDATE ================= */
 
-export const updateLocation = async (
-  locationId: string,
-  payload: Partial<any>,
-  user: IUser
-) => {
+/* ================= UPDATE LOCATION ================= */
+export const updateLocation = async ( locationId: string, payload: Partial<any>, user: IUser ) => {
   const location = await Location.findById(locationId);
   if (!location) throw new Error("Location not found");
 
@@ -102,12 +92,9 @@ export const updateLocation = async (
   return await location.save();
 };
 
-/* ================= DELETE ================= */
 
-export const deleteLocation = async (
-  locationId: string,
-  user: IUser
-) => {
+/* ================= DELETE LOCATION ================= */
+export const deleteLocation = async (locationId: string, user: IUser) => {
   const location = await Location.findById(locationId);
   if (!location) throw new Error("Location not found");
 
@@ -116,5 +103,8 @@ export const deleteLocation = async (
   }
 
   await location.deleteOne();
-  return true;
+  return {
+    success: true,
+    message: "Location deleted successfully",
+  };
 };

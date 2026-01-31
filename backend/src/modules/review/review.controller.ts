@@ -6,7 +6,7 @@ import { AuthRequest } from "../../middleware/auth.middleware";
 import { sendError, sendSuccess } from "../../utils/response";
 
 
-
+/* ================= CREATE REVIEW ================= */
 export const createReview = catchAsync(async (req: AuthRequest, res: Response) => {
     const user = req.user?._id;
 
@@ -21,6 +21,7 @@ export const createReview = catchAsync(async (req: AuthRequest, res: Response) =
 );
 
 
+/* ================= GET ALL REVIEWS ================= */
 export const getReviewsByService = catchAsync(async (req: Request, res: Response) => {
     const { serviceId } = req.params!;
 
@@ -42,6 +43,7 @@ export const getReviewsByService = catchAsync(async (req: Request, res: Response
 );
 
 
+/* ================= UPDATE REVIEW ================= */
 export const updateReview = catchAsync(async (req: AuthRequest, res: Response) => {
 
     const user = req.user?._id;
@@ -56,6 +58,7 @@ export const updateReview = catchAsync(async (req: AuthRequest, res: Response) =
 );
 
 
+/* ================= DELETE REVIEW ================= */
 export const deleteReview = catchAsync(async (req: AuthRequest, res: Response) => {
     const user = req.user?._id;
 

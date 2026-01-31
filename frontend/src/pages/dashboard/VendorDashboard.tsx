@@ -1,4 +1,11 @@
-import { Link, NavLink } from "react-router";
+// src/pages/dashboard/VendorDashboard.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useUserLogoutMutation } from "@/redux/features/auth/authApi";
+import { logout } from "@/redux/features/auth/authSlice";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { useDispatch } from "react-redux";
+import { Link, NavLink, useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 interface NavItems {
   path: string;
@@ -45,7 +52,28 @@ const navItems: NavItems[] = [
 ];
 
 const VendorDashboard = () => {
+  const navigate = useNavigate();
+  const [logoutUser] = useUserLogoutMutation();
+  const dispatch = useDispatch();
 
+  const handleLogout = async () => {
+    try {
+      const res = await logoutUser().unwrap();
+      if (res?.success) {
+        dispatch(logout());
+        toast.success(res.message || "Logout successful!", { autoClose: 1000 });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        toast.error("Logout failed. Please try again!");
+      }
+    } catch (error: any) {
+      console.error("Logout error:", error);
+      toast.error(error?.data?.message || "Failed to logout!");
+    }
+  };
+  
   return (
     <div className="bg-white p-8 md:h-screen flex flex-col justify-between">
       <div>
@@ -58,7 +86,7 @@ const VendorDashboard = () => {
         <hr className="mt-5" />
         <ul className="space-y-5 pt-5">
           {navItems.map((item, index) => (
-            <li key={index} className="text-[#0f172a] hover:text-[#f95937]">
+            <li key={index} className="text-[#0f172a] font-medium hover:text-[#f95937]">
               <NavLink
                 to={item.path}
                 end
@@ -72,6 +100,17 @@ const VendorDashboard = () => {
           ))}
         </ul>
       </div>
+            {/* logout */}
+            <div className="mb-3">
+              <hr className="mb-3" />
+              <button
+                onClick={handleLogout}
+                className="text-white flex items-center bg-[#f95937] px-5 py-1 font-medium rounded-sm cursor-pointer"
+              >
+                <FaArrowRightFromBracket className="mr-2" />
+                Logout
+              </button>
+            </div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { ToastContainer } from "react-toastify";
 import TopHeader from "./components/shared/TopHeader";
 import HeaderBottom from "./components/shared/HeaderBottom";
 import TitleManager from "./components/shared/TitleManager";
-
+import Footer from "./components/shared/Footer";
 
 const App = () => {
   return (
@@ -18,6 +18,7 @@ const App = () => {
         <HeaderBottom />
       </div>
       <Outlet />
+      <Footer/>
       <ToastContainer
         position="bottom-right"
         autoClose={1500}

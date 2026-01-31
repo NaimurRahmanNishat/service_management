@@ -1,10 +1,8 @@
 // src/modules/users/user.model.ts
-
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
 
 /* ================= TYPES ================= */
-
 export type Role = "user" | "vendor" | "admin" | "super_admin";
 
 export interface Address {
@@ -17,7 +15,7 @@ export interface Address {
 /* ================= USER INTERFACE ================= */
 
 export interface IUser extends Document {
-  name: string;
+  name: string; 
   email: string;
   phone: string;
   password: string;
@@ -25,7 +23,7 @@ export interface IUser extends Document {
   avatar: { public_id: string | null; url: string };
   refreshToken?: string | null;
   refreshTokenExpiry?: Date | null;
-  address?: Address;
+  address: Address;
   isActive: boolean;
   isVerified: boolean;
   // Admin specific fields
@@ -82,10 +80,10 @@ const userSchema = new Schema<IUser>(
     refreshToken: { type: String, default: null, },
     refreshTokenExpiry: { type: Date, default: null, },
     address: {
-      street: String,
-      city: String,
-      division: String,
-      postalCode: String,
+      street: { type: String, default: null, },
+      city: { type: String, default: null, },
+      division: { type: String, default: null, },
+      postalCode: { type: String, default: null, },
     },
     isActive: {
       type: Boolean,

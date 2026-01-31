@@ -11,7 +11,8 @@ export interface IRefreshPayload {
   id: string;
 }
 
-// Access token (10 minutes)
+
+/* ================= GENERATE ACCESS TOKEN ================= */
 export const generateAccessToken = (payload: IAccessPayload): string => {
   const secret = config.jwt_access_secret;
   if (!secret) {
@@ -21,7 +22,8 @@ export const generateAccessToken = (payload: IAccessPayload): string => {
   return jwt.sign(payload, secret, { expiresIn } as any);
 };
 
-// Refresh token (7 days)
+
+/* ================= GENERATE REFRESH TOKEN ================= */
 export const generateRefreshToken = (payload: IRefreshPayload): string => {
   const secret = config.refresh_token_secret;
   if (!secret) {
@@ -31,6 +33,8 @@ export const generateRefreshToken = (payload: IRefreshPayload): string => {
   return jwt.sign(payload, secret, { expiresIn } as any);
 };
 
+
+/* ================= VERIFY REFRESH TOKEN ================= */
 export const verifyRefreshToken = (token: string): IRefreshPayload => {
   const secret = config.refresh_token_secret;
   if (!secret) {

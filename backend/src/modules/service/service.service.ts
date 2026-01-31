@@ -10,31 +10,36 @@ import Vendor from "../vendor/vendor.model";
 
 /* ========================== 1. create service ========================== */
 export const createService = async (payload: ICreateServicePayload,user: { _id: string; role: string }) => {
-  // 🔒 Only vendor allowed
+  // Only vendor allowed
   if (user.role !== "vendor") {
     throw new AppError(403, "Only vendor can create service");
   }
 
-  // 🔍 Find vendor profile
+  // Find vendor profile
   const vendor = await Vendor.findOne({ user: user._id });
 
   if (!vendor) {
     throw new AppError(404, "Vendor profile not found");
   }
 
-  // 🔍 Validate product
+  // Validate product
   const product = await Product.findById(payload.product);
 
   if (!product || !product.isActive) {
     throw new AppError(404, "Product not found or inactive");
   }
 
-  // 🔐 Ownership check
-  if (product.vendor.toString() !== vendor._id.toString()) {
+  // // Ownership check
+  // if (product.vendor.toString() !== vendor._id!.toString()) {
+  //   throw new AppError(403, "Unauthorized product access");
+  // }
+
+  // Ownership check
+  if (product.vendor !== vendor._id!) {
     throw new AppError(403, "Unauthorized product access");
   }
 
-  // 🚫 Prevent duplicate service
+  // Prevent duplicate service
   const exists = await Service.findOne({
     product: payload.product,
     location: payload.location,
@@ -45,7 +50,7 @@ export const createService = async (payload: ICreateServicePayload,user: { _id: 
     throw new AppError(409, "Service already exists for this location");
   }
 
-  // ✅ Create service
+  // Create service
   const service = await Service.create({
     product: payload.product,
     location: payload.location,
@@ -65,24 +70,55 @@ export const createService = async (payload: ICreateServicePayload,user: { _id: 
 
 /* ========================== 2. get all services ========================== */
 export const getAllServices = async (payload: ICursorPaginationOptions) => {
-  const {limit = 10, cursor, sortBy = "createdAt", sortOrder = "desc", search} = payload;
+  const { limit = 10, cursor, sortBy = "createdAt", sortOrder = "desc", search, category } = payload;
 
-  const matchStage: any = {
+  /* ================== STEP 1: BASE SERVICE FILTER ================== */
+  const serviceFilter: any = {
     isActive: true,
     isAvailable: "available",
   };
 
-  // Cursor handling (SAFE)
+  // Cursor pagination
   if (cursor) {
-    matchStage.createdAt =
+    serviceFilter.createdAt =
       sortOrder === "desc"
         ? { $lt: new Date(cursor) }
         : { $gt: new Date(cursor) };
   }
 
-  const pipeline: any[] = [
-    { $match: matchStage },
+  /* ================== STEP 2: CATEGORY → PRODUCT IDS ================== */
+  if (category) {
+    const productIds = await Product.find({ category, isActive: true }).distinct("_id");
 
+    if (!productIds.length) {
+      return {
+        success: true,
+        message: "No services found",
+        data: [],
+        meta: {
+          limit,
+          hasMore: false,
+          nextCursor: null,
+          sortBy,
+          sortOrder,
+          totalFetched: 0,
+        },
+      };
+    }
+    serviceFilter.product = { $in: productIds };
+  }
+
+  /* ================== STEP 3: AGGREGATION PIPELINE ================== */
+  const pipeline: any[] = [
+    { $match: serviceFilter },
+
+    // SORT early (performance win)
+    { $sort: { createdAt: sortOrder === "asc" ? 1 : -1 } },
+
+    // LIMIT early (VERY IMPORTANT)
+    { $limit: limit + 1 },
+
+    /* ===== JOIN PRODUCT ===== */
     {
       $lookup: {
         from: "products",
@@ -91,8 +127,9 @@ export const getAllServices = async (payload: ICursorPaginationOptions) => {
         as: "product",
       },
     },
-    { $unwind: { path: "$product", preserveNullAndEmptyArrays: true } },
+    { $unwind: "$product" },
 
+    /* ===== JOIN LOCATION ===== */
     {
       $lookup: {
         from: "locations",
@@ -101,20 +138,10 @@ export const getAllServices = async (payload: ICursorPaginationOptions) => {
         as: "location",
       },
     },
-    { $unwind: { path: "$location", preserveNullAndEmptyArrays: true } },
-
-    {
-      $lookup: {
-        from: "vendors",
-        localField: "vendor",
-        foreignField: "_id",
-        as: "vendor",
-      },
-    },
-    { $unwind: { path: "$vendor", preserveNullAndEmptyArrays: true } },
+    { $unwind: "$location" },
   ];
 
-  /* SEARCH (NULL SAFE) */
+  /* ================== STEP 4: SEARCH ================== */
   if (search) {
     pipeline.push({
       $match: {
@@ -128,11 +155,7 @@ export const getAllServices = async (payload: ICursorPaginationOptions) => {
     });
   }
 
-  pipeline.push(
-    { $sort: { createdAt: sortOrder === "asc" ? 1 : -1 } },
-    { $limit: limit + 1 }
-  );
-
+  /* ================== STEP 5: EXECUTE ================== */
   const services = await Service.aggregate(pipeline);
 
   const { data, meta } = createCursorPaginationMeta(
@@ -171,12 +194,8 @@ export const getSingleService = async (id: string) => {
 };
 
 
-
 /* ========================== 4. update service ========================== */
-export const updateService = async (
-  id: string,
-  payload: IUpdateServicePayload
-) => {
+export const updateService = async (id: string,payload: IUpdateServicePayload) => {
   const service = await Service.findByIdAndUpdate(id, payload, {
     new: true,
   });
@@ -187,6 +206,7 @@ export const updateService = async (
 
   return service;
 };
+
 
 /* ========================== 5. delete service (soft delete) ========================== */
 export const deleteService = async (id: string) => {

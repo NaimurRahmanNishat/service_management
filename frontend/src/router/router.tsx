@@ -101,10 +101,6 @@ const router = createBrowserRouter([
         path: "/payment/cancel",
         element: <div>Payment Cancelled</div>,
       },
-      // {
-      //   path: "/payment/:id",
-      //   element: <Payment />,
-      // },
       {
         path: "/payment/:bookingId",
         element: <Payment />,
@@ -211,7 +207,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "commission", // children relative path (access admin, super-admin)
+        path: "commission", // children relative path (access admin, super-admin) 
         element: (
           <ProtectedRoute role={["vendor", "admin", "super_admin"]}>
             <CommissionAndPayment />

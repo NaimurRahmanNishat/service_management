@@ -2,7 +2,7 @@
 
 export type Division =
   | "Dhaka"
-  | "Chittagong"
+  | "Chattogram"
   | "Rajshahi"
   | "Khulna"
   | "Barisal"

@@ -14,7 +14,9 @@ export interface AuthRequest extends Request {
   user?: AuthUser;
 }
 
+/* ================= JWT PAYLOAD ================= */
 type JwtAccessPayload = { id: string; role: string; email?: string; };
+
 
 /* ================= AUTH ================= */
 export const isAuthenticated = ( req: AuthRequest, res: Response, next: NextFunction ) => {

@@ -2,19 +2,21 @@
 import { CACHE_PREFIX, DEFULT_TTL } from "../config/cacheConfig";
 import { redis } from "../config/redis";
 
-
+/* ================= CACHE KEYS ================= */
 export const namespacedKey = (key: string) => {
     return `${CACHE_PREFIX}${key}`;
 }
 
-// set cache in redis
+
+/* ================= SET CACHE ================= */
 export const setCache = async(key: string, value: any, ttlSeconds = DEFULT_TTL) =>{
     const namespacedKeyValue = namespacedKey(key);
     // redis set value
     await redis.set(namespacedKeyValue, JSON.stringify(value), "EX", ttlSeconds);
 }
 
-// get cache from redis
+
+/* ================= GET CACHE ================= */
 export const getCache = async(key: string): Promise<any | null> => {
     const namespacedKeyValue = namespacedKey(key);
     const raw = await redis.get(namespacedKeyValue);
@@ -29,7 +31,7 @@ export const getCache = async(key: string): Promise<any | null> => {
 }
 
 
-// get cache and total life time 
+/* ================= GET CACHE WITH TTL ================= */
 export const getCacheWithTTL = async<T=any>(key: string): Promise<{data: T | null; ttl: number} | null> => {
     const namespacedKeyValue = namespacedKey(key);
     const result = await redis.multi().get(namespacedKeyValue).ttl(namespacedKeyValue).exec() as [string | null, string | null][];
@@ -51,7 +53,7 @@ export const getCacheWithTTL = async<T=any>(key: string): Promise<{data: T | nul
 }
 
 
-// invalid cache (delete cache from redis)  for single cache delete
+/* ================= INVALIDATE CACHE (DELETE CACHE FROM REDIS) FOR SINGLE CACHE DELETE ================= */
 export const invalidateCache = async(pattern: string): Promise<number> => {
     try {
         let cursor = "0";
@@ -95,13 +97,13 @@ export const invalidateCache = async(pattern: string): Promise<number> => {
 }
 
 
-// invalid cache async
+/* ================= INVALIDATE CACHE ASYNC ================= */
 export const invalidateCacheAsync = (pattern: string): void => {
     invalidateCache(pattern).catch(error => console.error(`Cache invalidation failed: `, error));
 }
 
 
-// all data delete from redis
+/* ================= INVALIDATE ALL CACHE (DELETE ALL CACHE FROM REDIS) ================= */
 export const invalidateAllCache = async(patterns: string[])=> {
     const promise = patterns.map(pattern => invalidateCache(pattern));
     const results = await Promise.allSettled(promise);
@@ -112,4 +114,3 @@ export const invalidateAllCache = async(patterns: string[])=> {
         return total;
     }, 0);
 }
-

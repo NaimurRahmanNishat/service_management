@@ -1,6 +1,13 @@
-import { Link, NavLink } from "react-router-dom";
+// src/pages/dashboard/AdminDashboard.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { useUserLogoutMutation } from "@/redux/features/auth/authApi";
+import { useDispatch } from "react-redux";
+import { logout } from "@/redux/features/auth/authSlice";
+import { toast } from "react-toastify";
 
 interface NavItems {
   path: string;
@@ -22,7 +29,28 @@ const navItems: NavItems[] = [
 
 const AdminDashboard = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const [logoutUser] = useUserLogoutMutation();
+  const dispatch = useDispatch();
 
+  const handleLogout = async () => {
+    try {
+      const res = await logoutUser().unwrap();
+      if (res?.success) {
+        dispatch(logout());
+        toast.success(res.message || "Logout successful!", { autoClose: 1000 });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        toast.error("Logout failed. Please try again!");
+      }
+    } catch (error: any) {
+      console.error("Logout error:", error);
+      toast.error(error?.data?.message || "Failed to logout!");
+    }
+  };
+  
   return (
     <div className="bg-white text-black font-medium flex flex-col md:h-screen p-4">
       {/* Header (Logo + Toggle) */}
@@ -73,6 +101,16 @@ const AdminDashboard = () => {
           </ul>
         </div>
       </div>
+            <div className="mb-3">
+              <hr className="mb-3" />
+              <button
+                onClick={handleLogout}
+                className="text-white flex items-center bg-[#f95937] px-5 py-1 font-medium rounded-sm cursor-pointer"
+              >
+                <FaArrowRightFromBracket className="mr-2" />
+                Logout
+              </button>
+            </div>
     </div>
   );
 };

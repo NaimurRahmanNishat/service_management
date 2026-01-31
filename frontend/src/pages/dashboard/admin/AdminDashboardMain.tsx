@@ -1,3 +1,4 @@
+// src/pages/dashboard/admin/AdminDashboardMain.tsx
 import type { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import adminMan from "../../../assets/man-with-laptop.png";
@@ -9,7 +10,7 @@ import { FaArrowUp } from "react-icons/fa";
 const AdminDashboardMain = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   return (
-    <div className="min-h-screen flex flex-col gap-4 md:gap-8 pt-2 md:pt-8">
+    <div className="min-h-screen w-full flex flex-col gap-4 md:gap-8 pt-2 md:pt-8">
       {/* top section */}
       <div className="flex flex-col md:flex-row gap-4 w-full">
         {/* left section */}

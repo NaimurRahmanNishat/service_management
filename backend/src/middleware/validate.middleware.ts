@@ -4,6 +4,8 @@ import { catchAsync } from "./catchAsync";
 import { ZodError, ZodObject } from 'zod';
 import { createError } from "../utils/errorHandler";
 
+
+/* ================= VALIDATE MIDDLEWARE ZOD ================= */
 export const validate = (schema: ZodObject<any, any>) => catchAsync(async (req: Request , res: Response , next: NextFunction) => {
 
     const dataToValidate: {[key: string] : any} = {};

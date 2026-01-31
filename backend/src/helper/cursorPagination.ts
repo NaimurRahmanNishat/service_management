@@ -1,5 +1,7 @@
 // src/helper/cursorPagination.ts
 
+
+/* ================= CURSOR PAGINATION INTERFACE ================= */
 export interface ICursorPaginationOptions {
     limit?: number;
     cursor?: string | Date;
@@ -7,15 +9,19 @@ export interface ICursorPaginationOptions {
     sortOrder?: "asc" | "desc";
     search?: string;
     searchFields?: string[];
-}
+};
 
+
+/* ================= CURSOR PAGINATION INTERFACE ================= */
 export interface ICursorPaginationResult {
     limit: number;
     sortBy: string;
     sortOrder: "asc" | "desc";
     filter: any;
-}
+};
 
+
+/* ================= CALCULATE CURSOR PAGINATION ================= */
 export const calculateCursorPagination = (options: ICursorPaginationOptions): ICursorPaginationResult => {
     // Default values set if not provided
     const limit = options.limit && options.limit > 0 ? options.limit : 10;
@@ -60,6 +66,8 @@ export const calculateCursorPagination = (options: ICursorPaginationOptions): IC
     };
 };
 
+
+/* ================= CURSOR PAGINATION INTERFACE ================= */
 export interface ICursorPaginationMeta<T> {
     limit: number;
     hasMore: boolean;
@@ -68,11 +76,10 @@ export interface ICursorPaginationMeta<T> {
     sortOrder: "asc" | "desc";
     totalFetched?: number;            
     search?: string;                   
-}
+};
 
 
-// Create Cursor Pagination Meta Function (Cursor based pagination return meta & data)
-
+/* ================= CREATE CURSOR PAGINATION META  ================= */
 export const createCursorPaginationMeta = <T extends Record<string, any>>(
     data: T[],
     limit: number,

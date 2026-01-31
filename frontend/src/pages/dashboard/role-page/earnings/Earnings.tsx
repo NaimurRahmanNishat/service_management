@@ -1,4 +1,4 @@
-
+// src/pages/dashboard/role-page/earnings/Earnings.tsx
 
 const Earnings = () => {
   return (

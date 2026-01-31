@@ -1,10 +1,10 @@
 // src/middleware/multer.ts
-
 import multer from "multer";
 import { Request } from "express";
 
 const storage = multer.memoryStorage();
 
+/* ================= FILE FILTER ================= */
 const fileFilter = ( req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback ) => {
   if (!file.mimetype.startsWith("image/")) {
     cb(new Error("Only image files allowed"));
@@ -13,6 +13,7 @@ const fileFilter = ( req: Request, file: Express.Multer.File, cb: multer.FileFil
   }
 };
 
+/* ================= UPLOAD ================= */
 export const upload = multer({
   storage,
   fileFilter,
@@ -33,4 +34,4 @@ export const upload = multer({
 //    ↓
 // cloudinary (Promise.all)
 //    ↓
-// Service.images[] save
+// Users.images[] save

@@ -2,6 +2,7 @@
 
 import { Types } from "mongoose";
 import { serviceAvailability } from "./service.model";
+import { ProductCategory } from "../product/product.model";
 
 
 
@@ -44,4 +45,5 @@ export interface ICursorPaginationOptions {
   sortOrder?: "asc" | "desc" | undefined;
   search?: string | undefined;
   searchFields?: string[] | undefined;
+  category?: ProductCategory;
 }

@@ -1,5 +1,4 @@
 // src/modules/payment/payment.controller.ts
-
 import { Request, Response } from "express";
 import config from "../../config";
 import { AuthRequest } from "../../middleware/auth.middleware";
@@ -12,12 +11,11 @@ import Service from "../service/service.model";
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 
-// ========================= Commission Configuration =========================
+/* ================= COMMISSION CONFIGURATION ================= */
 const WEBSITE_COMMISSION_RATE = 0.10; // Fixed 10%
 
 
-
-// ========================= 1. make stripe payment =============================
+/* ================= MAKE STRIPE PAYMENT ================= */
 export const makeStripePayment = async (req: AuthRequest, res: Response) => {
   const { bookingId } = req.body;
 
@@ -80,8 +78,7 @@ export const makeStripePayment = async (req: AuthRequest, res: Response) => {
 };
 
 
-
-// ========================= 2. confirm stripe payment =============================
+/* ================= CONFIRM STRIPE PAYMENT ================= */
 export const confirmStripePayment = async (req: Request, res: Response) => {
   const { session_id } = req.body;
 
@@ -226,4 +223,3 @@ export const confirmStripePayment = async (req: Request, res: Response) => {
     });
   }
 };
-

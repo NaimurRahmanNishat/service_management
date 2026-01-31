@@ -1,3 +1,4 @@
+// src/components/shared/Error.tsx
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import notFound from "../../assets/404.gif";
@@ -12,11 +13,7 @@ const ErrorPage = () => {
         transition={{ duration: 0.6 }}
         className="w-full max-w-2xl h-80 relative"
       >
-        <img
-          src={notFound}
-          alt="404 Not Found"
-          className="object-contain"
-        />
+        <img src={notFound} alt="404 Not Found" className="object-contain" />
       </motion.div>
 
       {/* Message */}

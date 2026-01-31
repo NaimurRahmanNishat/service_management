@@ -5,7 +5,8 @@ import path from "path";
 import fs from "fs";
 import config from "../config";
 
-// email configuration interface
+
+/* ================= EMAIL CONFIG INTERFACE ================= */
 interface EmailConfig {
   host: string;
   port: number;
@@ -15,52 +16,59 @@ interface EmailConfig {
     pass: string;
   };
   from: string;
-}
+};
 
-// email retry config
+
+/* ================= EMAIL RETRY INTERFACE ================= */
 interface RetryConfig {
   maxRetries: number;
   retryDelay: number;
   backofMultiplier: number;
-}
+};
 
-// email options interface
+
+/* ================= EMAIL OPTIONS INTERFACE ================= */
 interface EmailOptions {
   retries?: number;
   priority?: "high" | "normal" | "low";
   tags?: string[];
-}
+};
 
-// bulk email options interface
+
+/* ================= BULK EMAIL OPTIONS INTERFACE ================= */
 interface BulkEmailOptions {
   batchSize?: number;
   delayBetweenBatches?: number;
   priority?: "high" | "normal" | "low";
-}
+};
 
-// email result interface
+
+/* ================= EMAIL RESULT INTERFACE ================= */
 interface EmailResult {
   success: boolean;
   messageId?: string;
   error?: string;
-}
+};
 
-// bulk email result interface
+
+/* ================= BULK EMAIL RESULT INTERFACE ================= */
 interface BulkEmailResult {
   success: boolean;
   failed: number;
   results: Array<{ to: string; success: boolean; error?: string }>;
-}
+};
 
-// email data interface
+
+/* ================= EMAIL DATA INTERFACE ================= */
 interface EmailData {
   to: string;
   subject: string;
   templateName: string;
   data: object;
-}
+};
 
-// get email configuration
+
+/* ================= GET EMAIL CONFIG ================= */
 const getEmailConfig = (): EmailConfig => {
   const port = Number(config.smtp_port) || 587;
   const secureEnv = config.smtp_secure;
@@ -81,19 +89,23 @@ const getEmailConfig = (): EmailConfig => {
   };
 };
 
+
+/* ================= GET RETRY CONFIG ================= */
 const getRetryConfig = (): RetryConfig => ({
   maxRetries: 3,
   retryDelay: 1000,
   backofMultiplier: 2,
 });
 
-// create email transporter
+
+/* ================= CREATE TRANSPORTER ================= */
 const createTransporter = () => {
   const config = getEmailConfig();
   return nodemailer.createTransport(config);
 };
 
-// verify email configuration
+
+/* ================= VERIFY EMAIL CONNECTION ================= */
 export const verifyEmailConnection = async (): Promise<boolean> => {
   try {
     const transporter = createTransporter();
@@ -106,7 +118,8 @@ export const verifyEmailConnection = async (): Promise<boolean> => {
   }
 };
 
-// resolve Template Path function
+
+/* ================= RESOLVE TEMPLATE PATH ================= */
 const resolveTemplatePath = (templateName: string): string => {
   const candidates = [
     path.join(__dirname, `../templates/${templateName}.ejs`), // ts-node
@@ -123,13 +136,15 @@ const resolveTemplatePath = (templateName: string): string => {
   return candidates[0] || defaultPath;
 };
 
-// check if template exists
+
+/* ================= CHECK TEMPLATE EXISTS ================= */
 const checkTemplateExists = (templateName: string): boolean => {
   const templatePath = resolveTemplatePath(templateName);
   return fs.existsSync(templatePath);
 };
 
-// render ejs Template
+
+/* ================= RENDER TEMPLATE ================= */
 const renderTemplate = async (
   templateName: string,
   data: object
@@ -138,7 +153,8 @@ const renderTemplate = async (
   return await ejs.renderFile(templatePath, data);
 };
 
-// perpare Email Options
+
+/* ================= PREPARE EMAIL OPTIONS ================= */
 const perpareEmailOptions = (
   to: string,
   subject: string,
@@ -163,7 +179,8 @@ const perpareEmailOptions = (
   };
 };
 
-// calculate Retry Delay
+
+/* ================= CALCULATE RETRY DELAY ================= */
 const calculateRetryDelay = (attempt: number): number => {
   const retryConfig = getRetryConfig();
   return (
@@ -171,7 +188,8 @@ const calculateRetryDelay = (attempt: number): number => {
   );
 };
 
-// send single email with retry logic
+
+/* ================= SEND EMAIL WITH RETRY ================= */
 const sendEmailWithRetry = async ( to: string, subject: string, templateName: string, data: object, options: EmailOptions = {} ): Promise<EmailResult> => {
   const retryConfig = getRetryConfig();
   const { retries = retryConfig.maxRetries, priority = "normal", tags = [], } = options;
@@ -227,9 +245,9 @@ const sendEmailWithRetry = async ( to: string, subject: string, templateName: st
   };
 };
 
-// TODO: send bulk emails with rate limiting
+// send bulk emails with rate limiting
 
-// send email with backward campatibility function
+/* ================= SEND EMAIL ================= */
 export const sendEmail = async ( to: string, subject: string, templateName: string, data: object ) => {
   const result = await sendEmailWithRetry(to, subject, templateName, data);
 

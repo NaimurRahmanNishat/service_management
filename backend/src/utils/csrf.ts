@@ -1,5 +1,4 @@
 // src/utils/csrf.ts
-
 import crypto from "crypto";
 
 export const generateCsrfToken = (): string => {

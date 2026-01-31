@@ -7,6 +7,7 @@ import { createLocationSchema } from "./location.validation";
 
 const router = Router();
 
+/* ================= CREATE LOCATION ================= */
 router.post("/create-location", isAuthenticated, authorizeRole("admin", "super_admin"), validate(createLocationSchema), createLocation);
 // router.get("/", isAuthenticated, controller.getAllLocations);
 // router.get("/:id", isAuthenticated, controller.getLocation);

@@ -1,7 +1,7 @@
 // src/modules/home/home.interface.ts
 
 
-// ========================= 1. create home data =============================
+/* ================= CREATE HOME ================= */
 export interface ImageDTO {
   public_id?: string;
   url?: string;

@@ -6,8 +6,8 @@ import { calculateCursorPagination, createCursorPaginationMeta } from "../../hel
 import { Types } from "mongoose";
 
 
+/* ================= CREATE REVIEW ================= */
 export const createReview = async ( userId: string, payload: { serviceId: string; rating: number; comment?: string }) => {
-
   const service = await Service.findById(payload.serviceId);
   if (!service) {
     throw new Error("Service not found");
@@ -21,10 +21,11 @@ export const createReview = async ( userId: string, payload: { serviceId: string
     comment: payload.comment,
   });
 
-    return { success: true, message: "Review created successfully", data: review  };
+  return { success: true, message: "Review created successfully", data: review  };
 };
 
 
+/* ================= GET ALL REVIEWS ================= */
 export const getReviewsByService = async ( serviceId: string, options: IGetReviewsOptions ) => {
   const { limit, sortBy, sortOrder, filter } = calculateCursorPagination({
     ...options,
@@ -50,9 +51,8 @@ export const getReviewsByService = async ( serviceId: string, options: IGetRevie
 };
 
 
-
+/* ================= UPDATE REVIEW ================= */
 export const updateReview = async ( reviewId: string, userId: string, payload: { rating?: number; comment?: string }) => {
-
   const review = await Review.findOneAndUpdate(
     { _id: reviewId, user: userId },
     payload,
@@ -67,6 +67,7 @@ export const updateReview = async ( reviewId: string, userId: string, payload: {
 };
 
 
+/* ================= DELETE REVIEW ================= */
 export const deleteReview = async (reviewId: string, userId: string) => {
   const review = await Review.findOneAndDelete({
     _id: reviewId,

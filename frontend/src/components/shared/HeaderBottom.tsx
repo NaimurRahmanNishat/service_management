@@ -1,8 +1,9 @@
-import { Link, useLocation } from "react-router-dom";
+// src/components/shared/HeaderBottom.tsx
+import { AnimatePresence, motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 const navItems = [
   { path: "/", label: "Home" },
-  // { path: "/services", label: "Services" },
   { path: "/technology", label: "Technology" },
   { path: "/health", label: "Health" },
   { path: "/lifestyle", label: "Lifestyle" },
@@ -20,25 +21,47 @@ interface Props {
 }
 
 const HeaderBottom = ({ onClick }: Props) => {
-  const location = useLocation();
-
   return (
-    <ul className="flex flex-col gap-4 md:flex-row md:gap-6">
-      {navItems.map((item) => {
-        const isActive = location.pathname === item.path;
-        return (
-          <li key={item.path}>
-            <Link
-              to={item.path}
-              onClick={onClick}
-              className={`block text-lg font-medium transition ${isActive ? "text-blue-600" : "text-gray-700 hover:text-blue-600"}`}
-            >
+    <div className="flex md:items-center flex-col md:space-x-6 md:flex-row space-y-3 md:space-y-0">
+      {navItems.map((item) => (
+        <NavLink
+          key={item.path}
+          to={item.path}
+          onClick={onClick}
+          className={({ isActive }) =>
+            `relative group px-1 pb-1 font-medium transition-colors duration-300 ${
+              isActive ? "text-[#239c47]" : "text-gray-700 hover:text-[#239c47]"
+            }`
+          }
+        >
+          {({ isActive }) => (
+            <div className="relative inline-block">
               {item.label}
-            </Link>
-          </li>
-        );
-      })}
-    </ul>
+
+              {/* Hover underline */}
+              {!isActive && (
+                <span className="absolute left-0 bottom-0 w-full h-0.5 bg-[#239c47] scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-full"></span>
+              )}
+
+              {/* Active underline animation */}
+              <AnimatePresence>
+                {isActive && (
+                  <motion.span
+                    key="active-underline"
+                    className="absolute left-0 bottom-0 w-full h-0.5 bg-[#239c47] rounded-full"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    exit={{ scaleX: 0 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    style={{ originX: 0 }}
+                  />
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+        </NavLink>
+      ))}
+    </div>
   );
 };
 

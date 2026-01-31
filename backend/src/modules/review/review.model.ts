@@ -3,6 +3,8 @@ import mongoose, { Document, Schema } from "mongoose";
 import Service from "../service/service.model";
 import Product from "../product/product.model";
 
+
+/* ================= INTERFACE ================= */
 export interface IReview extends Document {
   service: mongoose.Types.ObjectId;
   vendor: mongoose.Types.ObjectId;
@@ -15,6 +17,8 @@ export interface IReview extends Document {
   updatedAt?: Date;
 }
 
+
+/* ================= SCHEMA ================= */
 const reviewSchema = new Schema<IReview>(
   {
     service: {
@@ -46,6 +50,7 @@ const reviewSchema = new Schema<IReview>(
   { timestamps: true }
 );
 
+/* ================= INDEX ================= */
 reviewSchema.index({ service: 1, user: 1 }, { unique: true });
 reviewSchema.index({ vendor: 1 });
 reviewSchema.index({ rating: -1 });
@@ -93,7 +98,6 @@ async function updateProductRating(serviceId: mongoose.Types.ObjectId) {
   } else {
     product.rating = { average: 0, count: 0 };
   }
-
   await product.save();
 }
 
@@ -109,5 +113,6 @@ reviewSchema.post("findOneAndDelete", function (doc) {
   if (doc) updateProductRating(doc.service);
 });
 
+/* ================= MODEL ================= */
 const Review = mongoose.model<IReview>("Review", reviewSchema);
 export default Review;

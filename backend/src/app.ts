@@ -1,20 +1,17 @@
 // src/app.ts
-
 import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import config from "./config";
 import bodyParser from "body-parser";
 
-
-// Routes
+/* ================= IMPORT ROUTES ================= */
 import { globalErrorHandler } from "./utils/errorHandler";
 import router from "./routes";
 
 const app: express.Application = express();
 
-// ======================= GLOBAL MIDDLEWARE =======================
-
+/* ================= GLOBAL MIDDLEWARE ================= */
 app.use(express.json());
 
 app.use(
@@ -36,16 +33,14 @@ app.use(express.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded())
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
-// ======================= ROUTES =======================
-
+/* ================= ROUTES ================= */
 app.use("/api/v1", router); 
 
 app.get("/", (_req: Request, res: Response) => {
   res.send("ZenMo Server is Running...");
 });
 
-// ======================= ERROR HANDLER =======================
-
+/* ================= ERROR HANDLER ================= */
 app.use(globalErrorHandler);
 
 export default app;

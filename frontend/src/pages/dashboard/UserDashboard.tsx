@@ -1,9 +1,11 @@
+// src/pages/dashboard/UserDashboard.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useUserLogoutMutation } from "@/redux/features/auth/authApi";
 import { logout } from "@/redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 const navItems = [
   {
@@ -63,7 +65,7 @@ const UserDashboard = () => {
         <hr className="mt-5" />
         <ul className="space-y-5 pt-5">
           {navItems.map((item, index) => (
-            <li key={index} className="text-[#0f172a] hover:text-[#f95937]">
+            <li key={index} className="text-[#0f172a] font-medium hover:text-[#f95937]">
               <NavLink
                 to={item.path}
                 end
@@ -82,8 +84,9 @@ const UserDashboard = () => {
         <hr className="mb-3" />
         <button
           onClick={handleLogout}
-          className="text-white bg-[#f95937] px-5 py-1 font-medium rounded-sm cursor-pointer"
+          className="text-white flex items-center bg-[#f95937] px-5 py-1 font-medium rounded-sm cursor-pointer"
         >
+          <FaArrowRightFromBracket className="mr-2" />
           Logout
         </button>
       </div>

@@ -1,9 +1,8 @@
 // utils/uploadToCloudinary.ts
-
 import cloudinary from "../config/cloudinary";
 
 
-// ============================== Upload to Cloudinary ==============================
+/* ================= UPLOAD TO CLOUDINARY ================= */
 export const uploadToCloudinary = (buffer: Buffer, folder: string) =>
   new Promise<any>((resolve, reject) => {
     cloudinary.uploader.upload_stream(
@@ -13,20 +12,20 @@ export const uploadToCloudinary = (buffer: Buffer, folder: string) =>
         else resolve(result);
       }
     ).end(buffer);
-  });
+});
 
 
-// ============================== Delete from Cloudinary (Single) ==============================
+/* ================= DELETE FROM CLOUDINARY (SINGLE) ================= */
 export const deleteFromCloudinary = (publicId: string) =>
   new Promise<any>((resolve, reject) => {
     cloudinary.uploader.destroy(publicId, (err, result) => {
       if (err) reject(err);
       else resolve(result);
     });
-  });
+});
 
 
-// ============================== Delete from Cloudinary (Multiple) ==============================
+/* ================= DELETE IMAGES FROM CLOUDINARY ================= */
 export const deleteImagesFromCloudinary = async (images: any[]): Promise<{ success: number; failed: number; errors: string[] }> => {
   let successCount = 0;
   let failedCount = 0;

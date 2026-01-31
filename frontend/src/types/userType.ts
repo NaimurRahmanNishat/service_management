@@ -1,10 +1,8 @@
 // frontend/src/types/userType.ts
 
-/* ================= ROLE ================= */
-export type Role = "super_admin" | "admin" | "vendor" | "user";
+export type Role = "user" | "vendor" | "admin" | "super_admin";
 
 /* ================= ADDRESS ================= */
-
 export interface IAddress {
   street?: string;
   city?: string;
@@ -12,30 +10,13 @@ export interface IAddress {
   postalCode?: string;
 }
 
-/* ================= VENDOR DETAILS ================= */
-
-export interface IVendorDetails {
-  businessName?: string;
-  businessLicense?: string;
-  taxId?: string;
-  accountNumber?: string;
-  bankName?: string;
-  assignedProducts?: string[];   
-  assignedLocations?: string[]; 
-  isApproved?: boolean;
-  rating?: number;
-  totalOrders?: number;
-}
-
 /* ================= AVATAR ================= */
-
 export interface IAvatar {
   public_id: string | null;
   url: string;
 }
 
 /* ================= USER ================= */
-
 export interface IUser {
   _id: string;
   name: string;
@@ -46,9 +27,59 @@ export interface IUser {
   address?: IAddress;
   isActive: boolean;
   isVerified: boolean;
-  vendorDetails?: IVendorDetails;
+  totalCommissionEarned?: number;
+  pendingCommission?: number;
   refreshToken?: string | null;
   refreshTokenExpiry?: string | null;
   createdAt: string;
   updatedAt: string;
+}
+
+
+
+/* ================= GET ME ================= */
+export interface IGetMeResponse {
+  success: boolean;
+  message: string;
+  data: IUser;
+}
+
+
+/* ================= UPDATE PROFILE ================= */
+export interface IUpdateProfileResponse {
+  success: boolean;
+  message: string;
+  data: IUser;
+}
+
+
+/* ================= GET ALL USERS ================= */
+export interface IAllUserResponse {
+  success: boolean;
+  message: string;
+  data: IUser[];
+  meta: {
+    limit: number,
+    hasMore: boolean,
+    nextCursor: string | null,
+    sortBy: string,
+    sortOrder: "asc" | "desc",
+    totalFetched: number
+  }
+}
+
+export interface GetAllUsersParams {
+  limit?: number;
+  cursor?: string;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
+  search?: string;
+  role?: Role;
+}
+
+
+/* ================= DELETE USER ================= */
+export interface IDeleteUserResponse {
+  success: boolean;
+  message: string;
 }

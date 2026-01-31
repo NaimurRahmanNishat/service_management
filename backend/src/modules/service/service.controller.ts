@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 import { catchAsync } from "../../middleware/catchAsync";
 import { sendError, sendSuccess } from "../../utils/response";
 import { AuthRequest } from "../../middleware/auth.middleware";
+import { ProductCategory } from "../product/product.model";
+import { getCache, invalidateCacheAsync, setCache } from "../../utils/cache";
+import { USER_CACHE_TTL } from "../../config/cacheConfig";
 
 
 
@@ -20,32 +23,53 @@ export const createService = catchAsync(async (req: AuthRequest, res: Response) 
       return sendError(res, result.message, 400);
     }
 
+  /* ================== INVALIDATE ALL CACHE ================== */
+  invalidateCacheAsync("services:");
+
     return sendSuccess(res, result.message, result.data, 201);
   }
 );
 
 
-/* ========================== 2. get all services ========================== */
+/* ========================== GET ALL SERVICES ========================== */
 export const getAllServices = catchAsync(async (req: Request, res: Response) => {
 
   const payload = {
-    limit: req.query.limit ? Number(req.query.limit) : undefined,
+    limit: req.query.limit ? Number(req.query.limit) : 10,
     cursor: req.query.cursor as string,
-    sortBy: req.query.sortBy as string,
-    sortOrder: req.query.sortOrder as "asc" | "desc",
+    sortBy: (req.query.sortBy as string) || "createdAt",
+    sortOrder: (req.query.sortOrder as "asc" | "desc") || "desc",
     search: req.query.search as string,
+    category: req.query.category as ProductCategory,
   };
 
-    const result = await serviceService.getAllServices(payload);
+  /* ================== CACHE KEY ================== */
+  const cacheKey = `services:limit=${payload.limit}|cursor=${payload.cursor ?? "null"}|sort=${payload.sortBy}:${payload.sortOrder}|search=${payload.search ?? ""}|category=${payload.category ?? "all"}`;
 
-    if (!result.success) {
-      return sendError(res, result.message, 400);
-    }
-
-    return sendSuccess(res, result.message, result.data, 200, result.meta);
-
+  /* ================== GET CACHE ================== */
+  const cached = await getCache(cacheKey);
+  if (cached) {
+    return sendSuccess(
+      res,
+      "Services fetched from cache",
+      cached.data,
+      200,
+      cached.meta
+    );
   }
-);
+
+  /* ================== DB QUERY ================== */
+  const result = await serviceService.getAllServices(payload);
+
+  if (!result.success) {
+    return sendError(res, result.message, 400);
+  }
+
+  /* ================== SET CACHE ================== */
+  await setCache(cacheKey, { data: result.data, meta: result.meta}, USER_CACHE_TTL);
+
+  return sendSuccess(res, result.message, result.data, 200, result.meta);
+});
 
 
 /* ========================== 3. get single service ========================== */
@@ -61,7 +85,6 @@ export const getSingleService = catchAsync(async (req: Request, res: Response) =
 );
 
 
-
 /* ========================== 4. update service ========================== */
 export const updateService = catchAsync(
   async (req: Request, res: Response) => {
@@ -69,6 +92,9 @@ export const updateService = catchAsync(
       req.params.id!,
       req.body
     );
+
+  /* ================== INVALIDATE ALL CACHE ================== */
+  invalidateCacheAsync("services:");
 
     res.json({
       success: true,
@@ -78,11 +104,15 @@ export const updateService = catchAsync(
   }
 );
 
+
 /* ========================== 5. delete service ========================== */
 export const deleteService = catchAsync(
   async (req: Request, res: Response) => {
     const result = await serviceService.deleteService(req.params.id!);
 
+  /* ================== INVALIDATE ALL CACHE ================== */
+  invalidateCacheAsync("services:");
+  
     res.json({
       success: true,
       message: "Service deleted successfully",

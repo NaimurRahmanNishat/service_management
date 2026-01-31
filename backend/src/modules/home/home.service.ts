@@ -1,5 +1,4 @@
 // src/modules/home/home.service.ts
-
 import { Request } from "express";
 import Home from "./home.model";
 import { CreateHomeDTO, UploadedFiles } from "./home.interface";
@@ -9,7 +8,7 @@ import { getCache, invalidateAllCache, invalidateCache, setCache } from "../../u
 
 
 
-// ========================= 1. create home data =============================
+/* ================= CREATE HOME ================= */
 export const createHomeData = async ( data: CreateHomeDTO, files: UploadedFiles ) => {
   try {
     if (!data?.headerSliderTexts?.length) {
@@ -88,7 +87,7 @@ export const createHomeData = async ( data: CreateHomeDTO, files: UploadedFiles 
 };
 
 
-// ========================= 2. Get All Homes =============================
+/* ================= GET ALL HOMES ================= */
 export const getAllHomes = async (req: Request) => {
   try {
     const options = {
@@ -139,7 +138,7 @@ export const getAllHomes = async (req: Request) => {
 };
 
 
-// ========================= 3. Update Home (Main Logic) =============================
+/* ================= UPDATE HOME ================= */
 export const updateHomeData = async ( id: string, data: any, files: UploadedFiles ) => {
   try {
     const home = await Home.findById(id);
@@ -335,7 +334,7 @@ export const updateHomeData = async ( id: string, data: any, files: UploadedFile
 };
 
 
-// ========================= 4. Delete Home =============================
+/* ================= DELETE HOME ================= */
 export const deleteHome = async (id: string) => {
   try {
     const home = await Home.findById(id).lean();

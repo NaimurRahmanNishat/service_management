@@ -24,6 +24,8 @@ export const serviceApi = baseApi.injectEndpoints({
       if (params?.sortBy) q.append("sortBy", params.sortBy);
       if (params?.sortOrder) q.append("sortOrder", params.sortOrder);
       if (params?.search) q.append("search", params.search);
+      if (params?.category) q.append("category", params.category);
+      
       return { url: `/services?${q.toString()}`, method: "GET" };
     },
       providesTags: ["Service"],
