@@ -1,4 +1,4 @@
-# service_management folder structure
+# Zenmo
 
 // use moduler pattern (because this is big project) backend 
 
@@ -320,3 +320,34 @@ frontend/
 ┌──────────┐
 │  REVIEW  │
 └──────────┘
+
+🧠 RBAC Logic (Plain Bangla)
+🔴 Super Admin
+
+🟠 Admin
+
+Service create
+
+Location manage
+
+Vendor approve
+
+Commission rule set
+
+🔵 Vendor
+
+Assigned service 
+
+Location service provide
+
+Vendor price set
+
+🟢 User
+
+Service browse
+
+Booking
+
+Payment
+
+Review & Rating
