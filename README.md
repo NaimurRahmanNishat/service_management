@@ -1,433 +1,232 @@
-![Zenmo]
+![🚀 Zenmo – Multi-Vendor Service Platform]
 ### Overview
 
-Zenmo is a web application for book enthusiasts, allowing users to browse, purchase, and review books. The frontend is built using React, TypeScript, Redux Toolkit, and Tailwind CSS for a modern and responsive user experience.
+Zenmo is a scalable multi-vendor service marketplace where Admins provide service products, Vendors deliver services, and Users consume services through secure online payments.
 
-### Folder Structure
+It is designed with enterprise-grade architecture, role-based access control, and high-availability infrastructure.
 
-```
-// use moduler pattern (because this is big project) backend 
+### 🧠 Core Concept
+
+| Role            | Responsibility                                                |
+| --------------- | ------------------------------------------------------------- |
+| **Super Admin** | System configuration, platform control                        |
+| **Admin**       | Create services, assign products to vendors, manage locations |
+| **Vendor**      | Provide services in assigned locations, collect service fees  |
+| **User**        | Book services, make payments, give ratings & reviews          |
+
+
+### Service Flow
+
+1. Admin creates a service/product
+2. Admin assigns service to Vendor
+3. Vendor delivers service to User
+4. User makes payment
+5. Commission is split between Admin & Vendor
+6. User leaves rating & review
+
+
+### 🌍 Location-Based Service System
+
+Country
+ └── Division
+     └── District
+         └── City
+             └── Area
+                 └── Sub-Area
+                     └── Zip Code
+
+### Location Rules
+
+1. Locations are created & managed only by Admin / Super Admin
+2. When a Vendor is created, a Vendor Location Profile is auto-generated
+3. Vendors can only provide services inside their assigned locations
+4. No unnecessary location data is created unless a vendor exists
+
+
+### 💳 Payment System
+
+1. Stripe
+2. bKash
+3. IoT Scanner (future-ready integration)
+
+
+### Payment Flow
+User → Payment → Booking → Commission → Vendor & Admin
+
+
+### ⭐ Review & Rating System
+Users can:
+Rate services
+Leave comments
+Edit or delete their reviews
+Reviews appear on Service Detail Pages
+Used for vendor performance tracking
+
+
+### 🏗️ System Architecture
+
+# Load Balanced Infrastructure
+              ┌─────────────────┐
+              │   Nginx :80     │
+              │  Load Balancer  │
+              └────────┬────────┘
+                       │
+      ┌────────────────┼────────────────┐
+      ▼                ▼                ▼
+ Frontend          Frontend          Frontend
+  :5173              :5174              :5175
+
+# API Layer
+        ┌───────────────┐
+        │   Nginx :80   │
+        │   /api route │
+        └───────┬───────┘
+                │
+   ┌────────────┼────────────┐
+   ▼            ▼            ▼
+ Backend      Backend      Backend
+  :5001        :5002        :5003
+
+
+### Services
+
+MongoDB – Primary Database
+Redis – Caching & rate-limiting
+Cloudinary – Media storage
+
+
+### 🧩 Backend – Modular Architecture
 
 backend/
-├── src/
-│   ├── @types/
-│   │   └── api.d.ts
-│   │
-│   ├── config/
-│   │   ├── cacheConfig.ts
-│   │   ├── cloudinary.ts
-│   │   ├── db.ts
-│   │   ├── index.ts
-│   │   └── redis.ts
-│   │
-│   ├── helper/
-│   │   ├── baseImage.ts
-│   │   └── fileUploader.ts
-│   │
-│   ├── middlewares/
-│   │   ├── auth.middleware.ts
-│   │   ├── cacheAsync.ts
-│   │   └── validate.middleware.ts
-│   │
-│   ├── modules/
-│   │   ├── auth/
-│   │   │   ├── requirement.txt
-│   │   │   ├── auth.controller.ts
-│   │   │   ├── auth.repository.ts
-│   │   │   ├── auth.route.ts
-│   │   │   ├── auth.service.ts
-│   │   │   └── auth.validation.ts
-│   │   │
-│   │   ├── user/
-│   │   │   ├── requirement.txt
-│   │   │   ├── user.controller.ts
-│   │   │   ├── user.model.ts
-│   │   │   ├── user.repository.ts
-│   │   │   ├── user.route.ts
-│   │   │   ├── user.service.ts
-│   │   │   └── user.validation.ts
-│   │   │
-│   │   ├── service/
-│   │   │   ├── requirement.txt
-│   │   │   ├── service.controller.ts
-│   │   │   ├── service.model.ts
-│   │   │   ├── service.repository.ts
-│   │   │   ├── service.route.ts
-│   │   │   ├── service.service.ts
-│   │   │   └── service.validation.ts
-│   │   │
-│   │   ├── booking/
-│   │   │   ├── requirement.txt
-│   │   │   ├── booking.controller.ts
-│   │   │   ├── booking.model.ts
-│   │   │   ├── booking.repository.ts
-│   │   │   ├── booking.route.ts
-│   │   │   ├── booking.service.ts
-│   │   │   └── booking.validation.ts
-│   │   │
-│   │   ├── payment/
-│   │   │   ├── requirement.txt
-│   │   │   ├── payment.controller.ts
-│   │   │   ├── payment.model.ts
-│   │   │   ├── payment.repository.ts
-│   │   │   ├── payment.route.ts
-│   │   │   ├── payment.service.ts
-│   │   │   └── payment.validation.ts
-│   │   │
-│   │   ├── review/
-│   │   │   ├── requirement.txt
-│   │   │   ├── review.controller.ts
-│   │   │   ├── review.model.ts
-│   │   │   ├── review.repository.ts
-│   │   │   ├── review.route.ts
-│   │   │   ├── review.service.ts
-│   │   │   └── review.validation.ts
-│   │   │
-│   │   ├── report/
-│   │   │   ├── requirement.txt
-│   │   │   ├── report.controller.ts
-│   │   │   ├── report.model.ts
-│   │   │   ├── report.repository.ts
-│   │   │   ├── report.route.ts
-│   │   │   ├── report.service.ts
-│   │   │   └── report.validation.ts
-│   │   │
-│   │   ├── support/
-│   │   │   ├── requirement.txt
-│   │   │   ├── support.controller.ts
-│   │   │   ├── support.model.ts
-│   │   │   ├── support.repository.ts
-│   │   │   ├── support.route.ts
-│   │   │   ├── support.service.ts
-│   │   │   └── support.validation.ts
-│   │   │
-│   │   ├── finance/
-│   │   │   ├── requirement.txt
-│   │   │   ├── commission.model.ts
-│   │   │   ├── withdrawal.model.ts
-│   │   │   ├── paymentHistory.model.ts
-│   │   │   └── finance.service.ts
-│   │   │
-│   │   ├── notification/
-│   │   │   ├── notification.model.ts
-│   │   │   ├── notification.service.ts
-│   │   │   └── notification.route.ts
-│   │   │
-│   │   ├── admin/
-│   │   │   ├── requirement.txt
-│   │   │   ├── admin.controller.ts
-│   │   │   ├── admin.route.ts
-│   │   │   ├── admin.service.ts
-│   │   │   ├── auditLog.model.ts
-│   │   │   └── appConfig.model.ts
-│   │   │
-│   │   └── vendor/
-│   │       ├── requirement.txt
-│   │       ├── vendorProfile.model.ts
-│   │       ├── vendor.controller.ts
-│   │       ├── vendor.route.ts
-│   │       └── vendor.service.ts
-│   │
-│   ├── templates/
-│   │
-│   ├── utils/
-│   │   ├── cache.ts
-│   │   ├── constants.ts
-│   │   ├── cookie.ts
-│   │   ├── email.ts
-│   │   ├── errorHandler.ts
-│   │   ├── token.ts
-│   │   └── response.ts
-│   │
-│   ├── app.ts
-│   └── server.ts
-└── package.json
+└── src/
+    ├── config/
+    ├── middlewares/
+    ├── utils/
+    ├── helper/
+    └── modules/
+        ├── auth
+        ├── user
+        ├── service
+        ├── booking
+        ├── payment
+        ├── review
+        ├── report
+        ├── support
+        ├── finance
+        ├── notification
+        ├── admin
+        └── vendor
+
+# Each Module Contains
+controller.ts
+service.ts
+repository.ts
+model.ts
+route.ts
+validation.ts
+requirement.txt
+
+# This ensures:
+High maintainability
+Easy scalability
+Clear separation of concerns
 
 
-Frontend
+### 🎨 Frontend Stack
 
+# Technologies Used
+React + TypeScript
+Redux Toolkit
+Tailwind CSS
+Framer Motion
+shadcn ui
+magic ui
+zod & zod resolver
+Vite
+
+# Frontend Structure
 frontend/
-├── src/
-│   ├── assets/
-│   │   ├── (hero/image)
-│   │   └── image
-│   │
-│   ├── components/
-│   │   ├── shared/
-│   │   │   ├── Comments.tsx
-│   │   │   ├── Error.tsx
-│   │   │   ├── Footer.tsx
-│   │   │   ├── Header.tsx
-│   │   │   ├── IssueCard.tsx
-│   │   │   ├── Loading.tsx
-│   │   │   ├── NavItems.tsx
-│   │   │   ├── SearchFilter.tsx
-│   │   │   └── UserAuth.tsx
-│   │   │
-│   │   └── ui/(all ui file)
-|   |    
-│   ├── lib/
-│   │   └── utils.
-|   |  
-│   ├── pages/
-│   │   ├── [id]/
-│   │   │   └── SinglePage.tsx
-│   │   │   
-│   │   ├── dashboard/
-│   │   │   ├── super_admin/
-│   │   │   │
-│   │   │   ├── admin/
-│   │   │   │
-│   │   │   ├── vendor/
-│   │   │   │
-│   │   │   ├── user/
-│   │   │   │
-│   │   │   ├── SuperAdminDashboard.tsx
-│   │   │   ├── AdminDashboard.tsx
-│   │   │   ├── VendorDashboard.tsx
-│   │   │   ├── DashboardLayout.tsx
-│   │   │   └── UserDashboard.tsx
-│   │   │ 
-│   │   ├── home/
-│   │   │   └── Home.tsx
-│   │   │
-│   │   ├── service/
-│   │   │   └── Service.tsx
-│   │   │
-│   │   ├── technology/
-│   │   │   └── Technology.tsx
-│   │   │
-│   │   ├── health/
-│   │   │   └── Health.tsx
-│   │   │
-│   │   ├── lifestyle/
-│   │   │   └── LifeStyle.tsx
-│   │   │
-│   │   ├── fitness/
-│   │   │   └── Fitness.tsx
-│   │   │ 
-│   │   ├── house/
-│   │   │   └── House.tsx
-│   │   │ 
-│   │   ├── land/
-│   │   │   └── Land.tsx
-│   │   │ 
-│   │   ├── vehicle/
-│   │   │   └── Vehicle.tsx
-│   │   │ 
-│   │   ├── others/
-│   │   │   └── Others.tsx
-│   │   │ 
-│   │   ├── about/
-│   │   │   └── About.tsx
-│   │   │ 
-│   │   └── contact/
-│   │       └── Contact.tsx 
-│   │   
-│   ├── redux/
-│   │   ├── features/
-│   │   ├── hooks.ts
-│   │   └── store.ts
-│   │
-│   ├── routes/
-│   │   ├── protectedRoute.ts
-│   │   └── router.ts
-│   │   
-│   ├── types/
-│   │   └── index.ts
-│   │   
-│   ├── utils/
-│   │   └── getBaseUrl.ts
-│   │   
-│   ├── App.css
-│   │   
-│   ├── App.tsx
-│   │   
-│   ├── index.css
-│   │   
-│   ├── main.tsx
-│   │   
-│   └── vite-env.d.ts
-│
-├── index.html
-└── package.json
-
-```
-
-### load balancer & working server
-
-                    ┌─────────────────┐
-                    │   Nginx :80     │
-                    │  Load Balancer  │
-                    └────────┬────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-            ▼                ▼                ▼
-    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-    │  Frontend    │ │  Frontend    │ │  Frontend    │
-    │   :3001      │ │   :3002      │ │   :3003      │
-    └──────────────┘ └──────────────┘ └──────────────┘
-            │                │                │
-            └────────────────┼────────────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   Nginx :80     │
-                    │   /api route    │
-                    └────────┬────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-            ▼                ▼                ▼
-    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-    │  Backend     │ │  Backend     │ │  Backend     │
-    │   :5001      │ │   :5002      │ │   :5003      │
-    └──────────────┘ └──────────────┘ └──────────────┘
-            │                │                │
-            └────────────────┼────────────────┘
-                             │
-            ┌────────────────┼────────────────┐
-            │                │                │
-            ▼                ▼                ▼
-    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-    │   MongoDB    │ │    Redis     │ │  Cloudinary  │
-    └──────────────┘ └──────────────┘ └──────────────┘
+└── src/
+    ├── assets/
+    ├── components/
+    ├── constants/
+    ├── lib/
+    ├── pages/
+    ├── redux/
+    ├── routes/
+    ├── types/
+    └── utils/
 
 
+### Dashboard Roles
+Super Admin Dashboard
+Admin Dashboard
+Vendor Dashboard
+User Dashboard
+
+Each dashboard is role-protected and dynamically rendered.
 
 
-      ┌──────────┐      ┌────────────────┐
-      │  USER    │───▶ │ VENDOR_PROFILE │
-      └──────────┘      └────────────────┘
-            │                    │
-            │                    │
-            ▼                    ▼
-      ┌──────────┐       ┌────────────────┐
-      │ BOOKING  │◀────▶│  VENDOR_SERVICE│
-      └──────────┘       └────────────────┘
-         │                    ▲
-         │                    │
-         ▼                    │
-      ┌──────────┐      ┌────────────────┐
-      │ PAYMENT  │      │    SERVICE     │
-      └──────────┘      └────────────────┘
-         │                    │
-         ▼                    ▼
-      ┌──────────┐      ┌────────────────┐
-      │COMMISSION│      │    CATEGORY    │
-      └──────────┘      └────────────────┘
-         │                    │
-         ▼                    ▼
-      ┌──────────┐       ┌────────────────┐
-      │ LOCATION │◀────▶│  SERVICE_AREA  │
-      └──────────┘       └────────────────┘
-         │
-         ▼ 
-      ┌──────────┐
-      │  REVIEW  │
-      └──────────┘
+### 🔐 Authentication & Security
+JWT Authentication
+Access Token + Refresh Token
+CSRF Protection
+Rate Limiting
+Role-Based Access Control (RBAC)
 
-### Core Features
 
-#### 1. Authentication & Authorization
+### ⚙️ Key Features
 
-- User registration and login using JWT authentication.
-- High level authentication system (access token, refresh token, csrf token ratelimit ).
-- Role-based access control (super_admin, admin, vendor & user).
-- Password reset functionality.
+1. Multi-vendor service system
+2. Location-based service delivery
+3. Commission & finance management
+4. Secure payment integration
+5. Review & rating system
+6. Admin audit logs
+7. Redis caching
+8. Scalable & load-balanced architecture
 
-#### 2. User Management
 
-- Profile management with personal information updates.
-- Admin controls to block/unblock users.
+### 🚀 Installation
 
-#### 3. Product Management
+# Frontend
+https://github.com/NaimurRahmanNishat/service_management.git
+cd frontend
+npm install
+npm run dev
 
-- CRUD operations for books (admin only).
-- Categorized book browsing.
-- Search and filter functionality.
+# Backend
+cd backend
+npm install
+npm run dev
 
-#### 4. Order Management
 
-- Order creation with multiple products.
-- Integrated payment processing.
-- Order tracking system.
+### 🌐 Deployment
 
-#### 5. Review System
+Frontend: Vercel
+Backend: Docker + Nginx
+Database: MongoDB Atlas
+Cache: Redis
 
-- Users can add, edit, and delete reviews.
-- Rating system for books.
 
-#### 6. UI Components
+### 🤝 Contributing
 
-- Reusable UI components (buttons, modals, etc.).
-- Fully responsive and mobile-friendly design.
+Follow modular architecture
+Write clean & documented code
+Test before submitting PR
 
-#### 7. State Management
 
-- Redux Toolkit for managing app state efficiently.
+### 📞 Contact
 
-#### 8. Error Handling
+Email: naimurrhamun34@gmail.com
+LinkedIn: https://www.linkedin.com/in/naimur-rahman-0a8046381
+Facebook: https://www.facebook.com/profile.php?id=61576332312271
+Portfolio: https://portfolio-frontend-ten-coral.vercel.app
 
-- Global error handling with meaningful messages.
 
-#### 9. Deployment
+### 📜 License
+MIT License © Zenmo
 
-- Vercel configuration for seamless deployment.
 
-### Installation
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/Shakilofficial/booknest-frontend.git
-   cd frontend
-   ```
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Environment Configuration**:
-   - Create a `.env` file and set required variables.
-4. **Run the Application**:
-   ```bash
-   npm start
-   ```
-
-### Usage
-
-- Open `http://localhost:5173` in the browser.
-- Register/Login to access features.
-- Browse books, add to cart, and place orders.
-
-### Configuration
-
-- `.env` file must include API endpoints, authentication secrets, and other necessary configurations.
-
-### Deployment
-
-- Hosted on Vercel.
-- Ensure the `.vercel` folder is correctly configured with project settings.
-
-### Contributing
-
-- Follow code style guidelines.
-- Ensure new features are tested before submitting PRs.
-
-## Contact
-
-For questions or collaborations, contact me via:
-
-- **Email**: mrshakilhossain@outlook.com
-- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/your-profile)
-- **Facebook**: [Facebook Profile](https://www.facebook.com/iamshakilhossain)
-- **Portfolio**: [Portfolio Website](https://shakilhossain-sigma.vercel.app)
-
----
-
-## License
-
-This project is **MIT licensed**.
-
----
-
-Zenmo - Simplifying Online Service platform 📚🚀
+### 🌟 Zenmo
+A Scalable Multi-Vendor Service Platform for the Modern Web
