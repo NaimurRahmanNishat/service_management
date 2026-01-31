@@ -1,5 +1,11 @@
-# Zenmo
+![Zenmo]
+### Overview
 
+Zenmo is a web application for book enthusiasts, allowing users to browse, purchase, and review books. The frontend is built using React, TypeScript, Redux Toolkit, and Tailwind CSS for a modern and responsive user experience.
+
+### Folder Structure
+
+```
 // use moduler pattern (because this is big project) backend 
 
 backend/
@@ -246,9 +252,9 @@ frontend/
 ├── index.html
 └── package.json
 
+```
 
-
-
+### load balancer & working server
 
                     ┌─────────────────┐
                     │   Nginx :80     │
@@ -290,64 +296,138 @@ frontend/
 
 
 
-┌──────────┐      ┌────────────────┐
-│  USER    │────▶ │ VENDOR_PROFILE │
-└──────────┘      └────────────────┘
-     │                    │
-     │                    │
-     ▼                    ▼
-┌──────────┐       ┌────────────────┐
-│ BOOKING  │◀────▶│  VENDOR_SERVICE│
-└──────────┘       └────────────────┘
-     │                    ▲
-     │                    │
-     ▼                    │
-┌──────────┐      ┌────────────────┐
-│ PAYMENT  │      │    SERVICE     │
-└──────────┘      └────────────────┘
-     │                    │
-     ▼                    ▼
-┌──────────┐      ┌────────────────┐
-│COMMISSION│      │    CATEGORY    │
-└──────────┘      └────────────────┘
-     │                    │
-     ▼                    ▼
-┌──────────┐       ┌────────────────┐
-│ LOCATION │◀────▶│  SERVICE_AREA  │
-└──────────┘       └────────────────┘
-     │
-     ▼ 
-┌──────────┐
-│  REVIEW  │
-└──────────┘
+      ┌──────────┐      ┌────────────────┐
+      │  USER    │───▶ │ VENDOR_PROFILE │
+      └──────────┘      └────────────────┘
+            │                    │
+            │                    │
+            ▼                    ▼
+      ┌──────────┐       ┌────────────────┐
+      │ BOOKING  │◀────▶│  VENDOR_SERVICE│
+      └──────────┘       └────────────────┘
+         │                    ▲
+         │                    │
+         ▼                    │
+      ┌──────────┐      ┌────────────────┐
+      │ PAYMENT  │      │    SERVICE     │
+      └──────────┘      └────────────────┘
+         │                    │
+         ▼                    ▼
+      ┌──────────┐      ┌────────────────┐
+      │COMMISSION│      │    CATEGORY    │
+      └──────────┘      └────────────────┘
+         │                    │
+         ▼                    ▼
+      ┌──────────┐       ┌────────────────┐
+      │ LOCATION │◀────▶│  SERVICE_AREA  │
+      └──────────┘       └────────────────┘
+         │
+         ▼ 
+      ┌──────────┐
+      │  REVIEW  │
+      └──────────┘
 
-🧠 RBAC Logic (Plain Bangla)
-🔴 Super Admin
+### Core Features
 
-🟠 Admin
+#### 1. Authentication & Authorization
 
-Service create
+- User registration and login using JWT authentication.
+- High level authentication system (access token, refresh token, csrf token ratelimit ).
+- Role-based access control (super_admin, admin, vendor & user).
+- Password reset functionality.
 
-Location manage
+#### 2. User Management
 
-Vendor approve
+- Profile management with personal information updates.
+- Admin controls to block/unblock users.
 
-Commission rule set
+#### 3. Product Management
 
-🔵 Vendor
+- CRUD operations for books (admin only).
+- Categorized book browsing.
+- Search and filter functionality.
 
-Assigned service 
+#### 4. Order Management
 
-Location service provide
+- Order creation with multiple products.
+- Integrated payment processing.
+- Order tracking system.
 
-Vendor price set
+#### 5. Review System
 
-🟢 User
+- Users can add, edit, and delete reviews.
+- Rating system for books.
 
-Service browse
+#### 6. UI Components
 
-Booking
+- Reusable UI components (buttons, modals, etc.).
+- Fully responsive and mobile-friendly design.
 
-Payment
+#### 7. State Management
 
-Review & Rating
+- Redux Toolkit for managing app state efficiently.
+
+#### 8. Error Handling
+
+- Global error handling with meaningful messages.
+
+#### 9. Deployment
+
+- Vercel configuration for seamless deployment.
+
+### Installation
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/Shakilofficial/booknest-frontend.git
+   cd frontend
+   ```
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
+3. **Environment Configuration**:
+   - Create a `.env` file and set required variables.
+4. **Run the Application**:
+   ```bash
+   npm start
+   ```
+
+### Usage
+
+- Open `http://localhost:5173` in the browser.
+- Register/Login to access features.
+- Browse books, add to cart, and place orders.
+
+### Configuration
+
+- `.env` file must include API endpoints, authentication secrets, and other necessary configurations.
+
+### Deployment
+
+- Hosted on Vercel.
+- Ensure the `.vercel` folder is correctly configured with project settings.
+
+### Contributing
+
+- Follow code style guidelines.
+- Ensure new features are tested before submitting PRs.
+
+## Contact
+
+For questions or collaborations, contact me via:
+
+- **Email**: mrshakilhossain@outlook.com
+- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/your-profile)
+- **Facebook**: [Facebook Profile](https://www.facebook.com/iamshakilhossain)
+- **Portfolio**: [Portfolio Website](https://shakilhossain-sigma.vercel.app)
+
+---
+
+## License
+
+This project is **MIT licensed**.
+
+---
+
+Zenmo - Simplifying Online Service platform 📚🚀
