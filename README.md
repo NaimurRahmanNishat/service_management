@@ -5,7 +5,7 @@ Zenmo is a scalable multi-vendor service marketplace where Admins provide servic
 
 It is designed with enterprise-grade architecture, role-based access control, and high-availability infrastructure.
 
-# 🧠 Core Concept
+### 🧠 Core Concept
 
 | Role            | Responsibility                                                |
 | --------------- | ------------------------------------------------------------- |
@@ -15,7 +15,7 @@ It is designed with enterprise-grade architecture, role-based access control, an
 | **User**        | Book services, make payments, give ratings & reviews          |
 
 
-# Service Flow
+### Service Flow
 
 1. Admin creates a service/product
 2. Admin assigns service to Vendor
@@ -25,7 +25,7 @@ It is designed with enterprise-grade architecture, role-based access control, an
 6. User leaves rating & review
 
 
-# 🌍 Location-Based Service System
+### 🌍 Location-Based Service System
 
 ```
 Country
@@ -37,7 +37,7 @@ Country
                      └── Zip Code
 ```
 
-# Location Rules
+### Location Rules
 
 1. Locations are created & managed only by Admin / Super Admin
 2. When a Vendor is created, a Vendor Location Profile is auto-generated
@@ -66,7 +66,7 @@ Reviews appear on Service Detail Pages
 Used for vendor performance tracking
 ```
 
-# 🏗️ System Architecture
+### 🏗️ System Architecture
 
 ```
 # Load Balanced Infrastructure
@@ -103,7 +103,7 @@ Redis – Caching & rate-limiting
 Cloudinary – Media storage
 
 
-# 🧩 Backend – Modular Architecture
+### 🧩 Backend – Modular Architecture
 ```
 backend/
 └── src/
@@ -145,19 +145,27 @@ Easy scalability
 Clear separation of concerns
 ```
 
-# 🎨 Frontend Stack
+### 🎨 Frontend Stack
 
 ### Technologies Used
+
 React + TypeScript
+
 Redux Toolkit
+
 Tailwind CSS
+
 Framer Motion
+
 shadcn ui
+
 magic ui
+
 zod & zod resolver
+
 Vite
 
-# Frontend Structure
+### Frontend Structure
 ```
 frontend/
 └── src/
@@ -174,14 +182,17 @@ frontend/
 
 ### Dashboard Roles
 Super Admin Dashboard
+
 Admin Dashboard
+
 Vendor Dashboard
+
 User Dashboard
 
 Each dashboard is role-protected and dynamically rendered.
 
 
-# 🔐 Authentication & Security
+### 🔐 Authentication & Security
 1. JWT Authentication
 2. Access Token + Refresh Token
 3. CSRF Protection
@@ -203,7 +214,7 @@ Each dashboard is role-protected and dynamically rendered.
 
 ### 🚀 Installation
 
-# Frontend
+### Frontend
 https://github.com/NaimurRahmanNishat/service_management.git
 
 ```bash
@@ -213,7 +224,7 @@ npm run dev
 ```
 
 
-# Backend
+### Backend
 ```bash
 cd backend
 npm install
@@ -223,25 +234,30 @@ npm run dev
 ### 🌐 Deployment
 
 Frontend: Vercel
+
 Backend: Docker + Nginx
+
 Database: MongoDB Atlas
+
 Cache: Redis
 
 
 ### 🤝 Contributing
 
 Follow modular architecture
+
 Write clean & documented code
+
 Test before submitting PR
 
 
 ### 📞 Contact
-
+```
 Email: naimurrhamun34@gmail.com
 LinkedIn: https://www.linkedin.com/in/naimur-rahman-0a8046381
 Facebook: https://www.facebook.com/profile.php?id=61576332312271
 Portfolio: https://portfolio-frontend-ten-coral.vercel.app
-
+```
 
 ### 📜 License
 MIT License © Zenmo
