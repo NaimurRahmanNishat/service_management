@@ -252,12 +252,14 @@ Test before submitting PR
 
 
 ### 📞 Contact
-```
-Email: naimurrhamun34@gmail.com
-LinkedIn: https://www.linkedin.com/in/naimur-rahman-0a8046381
-Facebook: https://www.facebook.com/profile.php?id=61576332312271
-Portfolio: https://portfolio-frontend-ten-coral.vercel.app
-```
+
+For questions or collaborations, contact me via:
+
+- **Email**: naimurrhamun34@gmail.com
+- **LinkedIn**: [LinkedIn Profile](https://www.linkedin.com/in/naimur-rahman-0a8046381)
+- **Facebook**: [Facebook Profile](https://www.facebook.com/profile.php?id=61576332312271)
+- **Portfolio**: [Portfolio Website](https://portfolio-frontend-ten-coral.vercel.app)
+
 
 ### 📜 License
 MIT License © Zenmo
