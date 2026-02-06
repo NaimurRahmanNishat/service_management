@@ -90,7 +90,7 @@ const ServiceDetails = () => {
       duration: quantity,
       startDate,
       quantity,
-      notes: "", // Optional: You can add a notes field in the form
+      notes: "", 
     };
 
     try {
@@ -98,7 +98,7 @@ const ServiceDetails = () => {
       const response = await createBooking(bookingData).unwrap();
 
       if (response.success) {
-        toast.success("Booking created successfully!");
+        toast.success("Booking pending successfully!");
 
         // 6. Store booking details in Redux for payment page
         dispatch(

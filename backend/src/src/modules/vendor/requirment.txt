@@ -1,0 +1,7 @@
+
+
+user
+shop_name
+address
+commision_rate
+status

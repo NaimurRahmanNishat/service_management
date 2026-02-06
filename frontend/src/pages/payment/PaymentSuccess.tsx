@@ -4,6 +4,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { toast } from "react-toastify";
 
 interface ServiceItem {
   name: string;
@@ -57,6 +58,9 @@ const PaymentSuccess = () => {
           }
         );
         setSessionData(response.data.data);
+        if (response.data.data?.status === "completed") {
+          toast.success("Service booked successfully!");
+        }
       } catch (error) {
         console.error("Payment confirmation failed:", error);
       } finally {

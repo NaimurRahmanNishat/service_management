@@ -106,7 +106,7 @@ const { data, isLoading, error, refetch } = useGetAllUsersQuery(
               setSearch(e.target.value);
               setShowResult(true);
             }}
-            className="px-4 py-2 w-sm rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+            className="hidden md:flex px-4 py-2 w-sm rounded-md border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           />
         )}
       </div>

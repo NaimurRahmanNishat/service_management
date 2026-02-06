@@ -14,6 +14,9 @@ import { logout } from "@/redux/features/auth/authSlice";
 import HeaderBottom from "./HeaderBottom";
 import SearchBar from "./SearchBar";
 import MobileSearch from "./MobileSearch";
+import logo from "../../assets/logo.png";
+
+
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -60,7 +63,8 @@ const Header = () => {
             to="/"
             className="bg-linear-to-r from-blue-600 via-purple-500 to-pink-500 bg-clip-text text-transparent"
           >
-            Zen<span className="text-yellow-500">mo</span>
+            {/* Zen<span className="text-yellow-500">mo</span> */}
+            <img src={logo} alt="logo" className="w-24 h-12 rounded-full"/>
           </Link>
         </h1>
 
