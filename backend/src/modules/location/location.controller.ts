@@ -9,7 +9,7 @@ import { IUser } from "../users/user.model";
 /* ================= CREATE LOCATION ================= */
 export const createLocation = catchAsync(
   async (req: AuthRequest, res: Response) => {
-    const user = req.user as IUser;
+    const user = req?.user as any;
 
     if (!user) {
       return sendError(res, "Unauthorized", 401);

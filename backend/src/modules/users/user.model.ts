@@ -131,8 +131,6 @@ userSchema.methods.compareRefreshToken = async function (token: string): Promise
 };
 
 // Indexes
-userSchema.index({ email: 1 }, { unique: true });
-userSchema.index({ phone: 1 }); 
 userSchema.index({ role: 1 }); 
 userSchema.index({ isVerified: 1 });
 userSchema.index({ createdAt: -1 }); 
